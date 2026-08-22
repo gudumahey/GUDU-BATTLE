@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GUDU BATTLE</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LOADING -->
+    <div id="loadingScreen">
+        <div class="loading-logo">GUDU</div>
+        <div class="loading-text">BATTLE ROYALE</div>
+        <div class="loader"></div>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div id="menuScreen">
+
+        <div class="menu-overlay"></div>
+
+        <div class="menu-content">
+
+            <div class="game-logo">
+                <span>GUDU</span>
+                <small>BATTLE</small>
+            </div>
+
+            <p class="subtitle">
+                SURVIVE • FIGHT • DOMINATE
+            </p>
+
+            <button id="playButton">
+                ▶ PLAY
+            </button>
+
+            <div class="menu-info">
+                <span>🎮 PC</span>
+                <span>⚡ ONLINE</span>
+                <span>🔥 BATTLE ROYALE</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- GAME -->
+    <div id="gameScreen">
+
+        <!-- TOP HUD -->
+        <div class="top-hud">
+
+            <div class="hud-box">
+                <span class="hud-title">PLAYER</span>
+                <span id="playerName">GUDU</span>
+            </div>
+
+            <div class="hud-box">
+                <span class="hud-title">KILLS</span>
+                <span id="killCount">0</span>
+            </div>
+
+            <div class="hud-box">
+                <span class="hud-title">ALIVE</span>
+                <span id="aliveCount">10</span>
+            </div>
+
+        </div>
+
+        <!-- CROSSHAIR -->
+        <div id="crosshair">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- HEALTH -->
+        <div class="health-container">
+
+            <div class="health-label">
+                ❤️ HEALTH
+            </div>
+
+            <div class="health-bar">
+                <div id="healthFill"></div>
+            </div>
+
+            <div id="healthText">
+                100 / 100
+            </div>
+
+        </div>
+
+        <!-- WEAPON -->
+        <div class="weapon-hud">
+
+            <div class="weapon-icon">
+                🔫
+            </div>
+
+            <div>
+                <div class="weapon-name">
+                    GUDU RIFLE
+                </div>
+
+                <div class="ammo">
+                    <span id="ammoCount">30</span>
+                    <span class="ammo-max">/ 90</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+
+            <div>
+                <b>W A S D</b>
+                <span>MOVE</span>
+            </div>
+
+            <div>
+                <b>SHIFT</b>
+                <span>SPRINT</span>
+            </div>
+
+            <div>
+                <b>SPACE</b>
+                <span>JUMP</span>
+            </div>
+
+            <div>
+                <b>CLICK</b>
+                <span>SHOOT</span>
+            </div>
+
+        </div>
+
+        <!-- GAME MESSAGE -->
+        <div id="gameMessage"></div>
+
+    </div>
+
+    <!-- THREE.JS -->
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js">
+    </script>
+
+    <!-- GAME SCRIPT -->
+    <script type="module" src="game.js"></script>
+
+</body>
+</html>

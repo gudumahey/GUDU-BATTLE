@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GUDU BATTLE</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUDU BATTLE</title>
+
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-<!-- LOADING -->
+<!-- ================= LOADING ================= -->
+
 <div id="loadingScreen">
     <div class="loadingLogo">GUDU</div>
     <div class="loadingSub">BATTLE</div>
-    <div class="loadingText">LOADING...</div>
-    <div class="loadingBar"><span></span></div>
+
+    <div class="loadingText">INITIALIZING BATTLEFIELD...</div>
+
+    <div class="loadingBar">
+        <span></span>
+    </div>
 </div>
 
 
@@ -22,176 +28,474 @@
 
 <div id="home">
 
-    <header>
-        <div class="logo">GUDU<span>BATTLE</span></div>
+    <header class="topbar">
 
-        <div class="playerInfo">
-            <div class="avatar">G</div>
+        <div class="brand">
+            <strong>GUDU</strong>
+            <span>BATTLE</span>
+        </div>
+
+        <div class="playerProfile">
+
+            <div class="profileAvatar">
+                G
+            </div>
+
             <div>
                 <b>GUDU PLAYER</b>
                 <small>LEVEL 12</small>
             </div>
+
         </div>
+
     </header>
 
 
     <section class="hero">
 
-        <div>
-            <div class="mini">WELCOME TO</div>
+        <div class="heroContent">
 
-            <h1>GUDU<br><span>BATTLE</span></h1>
+            <div class="eyebrow">
+                GUDU BATTLE NETWORK
+            </div>
+
+            <h1>
+                ENTER THE
+                <span>BATTLEFIELD</span>
+            </h1>
 
             <p>
-                Enter the battlefield and fight powerful
-                AI opponents in intense 1V1 battles.
+                Choose your weapons, deploy your gloo wall,
+                throw grenades and fight against an intelligent
+                GUDU AI opponent.
             </p>
 
-            <button class="mainButton" onclick="open1v1Lobby()">
-                ⚔️ 1V1 BOT
+            <button
+                class="primaryButton"
+                onclick="open1v1Lobby()"
+            >
+                ENTER 1V1
             </button>
+
         </div>
 
-        <div class="heroBot">🤖</div>
+        <div class="heroCharacter">
+
+            <div class="characterGlow"></div>
+
+            <div class="fighter large">
+
+                <div class="fighterHead">
+                    <div class="hair"></div>
+                </div>
+
+                <div class="fighterNeck"></div>
+
+                <div class="fighterBody">
+                    <div class="armor"></div>
+                </div>
+
+                <div class="fighterArm leftArm"></div>
+                <div class="fighterArm rightArm"></div>
+
+                <div class="fighterHand leftHand"></div>
+                <div class="fighterHand rightHand"></div>
+
+                <div class="fighterLeg leftLeg"></div>
+                <div class="fighterLeg rightLeg"></div>
+
+                <div class="fighterShoe leftShoe"></div>
+                <div class="fighterShoe rightShoe"></div>
+
+            </div>
+
+        </div>
 
     </section>
 
 
-    <nav>
-        <button class="nav active" onclick="showPanel('homePanel')">🏠<small>HOME</small></button>
-        <button class="nav" onclick="showPanel('gunsPanel')">🔫<small>GUNS</small></button>
-        <button class="nav" onclick="showPanel('evoPanel')">⚡<small>EVO</small></button>
-        <button class="nav" onclick="showPanel('bundlePanel')">👕<small>BUNDLES</small></button>
-        <button class="nav" onclick="showPanel('inventoryPanel')">🎒<small>INVENTORY</small></button>
+    <!-- ================= NAV ================= -->
+
+    <nav class="mainNav">
+
+        <button
+            class="navButton active"
+            onclick="showPanel('homePanel',this)"
+        >
+            <b>HOME</b>
+            <small>MAIN</small>
+        </button>
+
+        <button
+            class="navButton"
+            onclick="showPanel('gunsPanel',this)"
+        >
+            <b>WEAPONS</b>
+            <small>ARMORY</small>
+        </button>
+
+        <button
+            class="navButton"
+            onclick="showPanel('evoPanel',this)"
+        >
+            <b>EVO</b>
+            <small>UPGRADES</small>
+        </button>
+
+        <button
+            class="navButton"
+            onclick="showPanel('bundlePanel',this)"
+        >
+            <b>BUNDLES</b>
+            <small>OUTFITS</small>
+        </button>
+
+        <button
+            class="navButton"
+            onclick="showPanel('inventoryPanel',this)"
+        >
+            <b>INVENTORY</b>
+            <small>LOADOUT</small>
+        </button>
+
     </nav>
 
 
-    <main>
+    <main class="mainContent">
 
-        <!-- HOME PANEL -->
 
-        <section id="homePanel" class="panel activePanel">
+        <!-- ================= HOME PANEL ================= -->
 
-            <h2>⚔️ BATTLE CENTER</h2>
+        <section
+            id="homePanel"
+            class="panel activePanel"
+        >
 
-            <div class="cards">
+            <div class="sectionTitle">
 
-                <div class="card featured">
-                    <div class="cardIcon">🤖⚔️</div>
-                    <h3>1V1 BOT BATTLE</h3>
-                    <p>Enter a private lobby and fight against an AI opponent.</p>
-                    <button onclick="open1v1Lobby()">ENTER 1V1 LOBBY</button>
-                </div>
+                <small>BATTLE CENTER</small>
 
-                <div class="card">
-                    <div class="cardIcon">🔫</div>
-                    <h3>WEAPON ARMORY</h3>
-                    <p>Choose your weapon before entering battle.</p>
-                    <button onclick="showPanel('gunsPanel')">OPEN ARMORY</button>
-                </div>
-
-                <div class="card">
-                    <div class="cardIcon">⚡</div>
-                    <h3>EVO WEAPONS</h3>
-                    <p>Powerful upgraded weapons for your battles.</p>
-                    <button onclick="showPanel('evoPanel')">VIEW EVO</button>
-                </div>
+                <h2>
+                    CHOOSE YOUR
+                    <span>MISSION</span>
+                </h2>
 
             </div>
+
+
+            <div class="featureGrid">
+
+                <article class="featureCard mainFeature">
+
+                    <div class="featureIcon">
+                        01
+                    </div>
+
+                    <h3>
+                        1V1 BOT BATTLE
+                    </h3>
+
+                    <p>
+                        Enter a private battlefield and
+                        fight an AI-controlled opponent.
+                    </p>
+
+                    <button
+                        onclick="open1v1Lobby()"
+                    >
+                        ENTER LOBBY
+                    </button>
+
+                </article>
+
+
+                <article class="featureCard">
+
+                    <div class="featureIcon">
+                        02
+                    </div>
+
+                    <h3>
+                        WEAPON ARMORY
+                    </h3>
+
+                    <p>
+                        Select assault rifles, SMGs,
+                        shotguns, pistols and snipers.
+                    </p>
+
+                    <button
+                        onclick="showPanel('gunsPanel')"
+                    >
+                        OPEN ARMORY
+                    </button>
+
+                </article>
+
+
+                <article class="featureCard">
+
+                    <div class="featureIcon">
+                        03
+                    </div>
+
+                    <h3>
+                        EVO WEAPONS
+                    </h3>
+
+                    <p>
+                        Equip powerful original GUDU
+                        EVO weapons.
+                    </p>
+
+                    <button
+                        onclick="showPanel('evoPanel')"
+                    >
+                        VIEW EVO
+                    </button>
+
+                </article>
+
+            </div>
+
         </section>
 
 
-        <!-- GUNS -->
+        <!-- ================= WEAPONS ================= -->
 
-        <section id="gunsPanel" class="panel">
+        <section
+            id="gunsPanel"
+            class="panel"
+        >
 
-            <h2>🔫 WEAPON ARMORY</h2>
+            <div class="sectionTitle">
 
-            <div class="cards">
+                <small>ARMORY</small>
 
-                <div class="card">
-                    <div class="cardIcon">🔫</div>
+                <h2>
+                    WEAPON
+                    <span>LOADOUT</span>
+                </h2>
+
+            </div>
+
+
+            <div class="weaponGrid">
+
+
+                <div class="weaponCard">
+
+                    <div class="weaponVisual rifle">
+                        ▬▬▬
+                    </div>
+
                     <h3>GUDU AR</h3>
-                    <p>Damage: 25</p>
-                    <p>Magazine: 30</p>
-                    <button onclick="equipGun('GUDU AR')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>25</b></span>
+                        <span>RATE <b>HIGH</b></span>
+                        <span>MAG <b>30</b></span>
+                    </div>
+
+                    <button onclick="equipGun('GUDU AR')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">🔫</div>
+
+                <div class="weaponCard">
+
+                    <div class="weaponVisual smg">
+                        ▬▬▬
+                    </div>
+
                     <h3>GUDU SMG</h3>
-                    <p>Damage: 17</p>
-                    <p>Magazine: 40</p>
-                    <button onclick="equipGun('GUDU SMG')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>17</b></span>
+                        <span>RATE <b>VERY HIGH</b></span>
+                        <span>MAG <b>40</b></span>
+                    </div>
+
+                    <button onclick="equipGun('GUDU SMG')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">💥</div>
+
+                <div class="weaponCard">
+
+                    <div class="weaponVisual shotgun">
+                        ▬▬▬
+                    </div>
+
                     <h3>GUDU SHOTGUN</h3>
-                    <p>Damage: 12 × 7</p>
-                    <p>Magazine: 6</p>
-                    <button onclick="equipGun('GUDU SHOTGUN')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>84</b></span>
+                        <span>RANGE <b>LOW</b></span>
+                        <span>MAG <b>6</b></span>
+                    </div>
+
+                    <button onclick="equipGun('GUDU SHOTGUN')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">🎯</div>
+
+                <div class="weaponCard">
+
+                    <div class="weaponVisual sniper">
+                        ▬▬▬
+                    </div>
+
                     <h3>GUDU SNIPER</h3>
-                    <p>Damage: 90</p>
-                    <p>Magazine: 5</p>
-                    <button onclick="equipGun('GUDU SNIPER')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>90</b></span>
+                        <span>RANGE <b>MAX</b></span>
+                        <span>MAG <b>5</b></span>
+                    </div>
+
+                    <button onclick="equipGun('GUDU SNIPER')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">🔫</div>
+
+                <div class="weaponCard">
+
+                    <div class="weaponVisual pistol">
+                        ▬▬▬
+                    </div>
+
                     <h3>GUDU PISTOL</h3>
-                    <p>Damage: 30</p>
-                    <p>Magazine: 12</p>
-                    <button onclick="equipGun('GUDU PISTOL')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>30</b></span>
+                        <span>RATE <b>MEDIUM</b></span>
+                        <span>MAG <b>12</b></span>
+                    </div>
+
+                    <button onclick="equipGun('GUDU PISTOL')">
+                        EQUIP
+                    </button>
+
                 </div>
+
 
             </div>
 
         </section>
 
 
-        <!-- EVO -->
+        <!-- ================= EVO ================= -->
 
-        <section id="evoPanel" class="panel">
+        <section
+            id="evoPanel"
+            class="panel"
+        >
 
-            <h2>⚡ EVO WEAPONS</h2>
+            <div class="sectionTitle">
 
-            <div class="cards">
+                <small>EVOLUTION SYSTEM</small>
 
-                <div class="card evo">
-                    <div class="cardIcon">⚡</div>
+                <h2>
+                    GUDU
+                    <span>EVO WEAPONS</span>
+                </h2>
+
+            </div>
+
+
+            <div class="weaponGrid">
+
+
+                <div class="weaponCard evoCard">
+
+                    <div class="evoIcon thunder">
+                        T
+                    </div>
+
                     <h3>THUNDER-X EVO</h3>
-                    <p>Damage: 38</p>
-                    <p>Magazine: 35</p>
-                    <button onclick="equipGun('THUNDER-X EVO')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>38</b></span>
+                        <span>RATE <b>EXTREME</b></span>
+                        <span>MAG <b>35</b></span>
+                    </div>
+
+                    <button onclick="equipGun('THUNDER-X EVO')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card evo">
-                    <div class="cardIcon">🔥</div>
+
+                <div class="weaponCard evoCard">
+
+                    <div class="evoIcon inferno">
+                        I
+                    </div>
+
                     <h3>INFERNO EVO</h3>
-                    <p>Damage: 45</p>
-                    <p>Magazine: 30</p>
-                    <button onclick="equipGun('INFERNO EVO')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>45</b></span>
+                        <span>RATE <b>HIGH</b></span>
+                        <span>MAG <b>30</b></span>
+                    </div>
+
+                    <button onclick="equipGun('INFERNO EVO')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card evo">
-                    <div class="cardIcon">❄️</div>
+
+                <div class="weaponCard evoCard">
+
+                    <div class="evoIcon frost">
+                        F
+                    </div>
+
                     <h3>FROST EVO</h3>
-                    <p>Damage: 34</p>
-                    <p>Magazine: 42</p>
-                    <button onclick="equipGun('FROST EVO')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>34</b></span>
+                        <span>RATE <b>EXTREME</b></span>
+                        <span>MAG <b>42</b></span>
+                    </div>
+
+                    <button onclick="equipGun('FROST EVO')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card evo">
-                    <div class="cardIcon">🌌</div>
+
+                <div class="weaponCard evoCard">
+
+                    <div class="evoIcon void">
+                        V
+                    </div>
+
                     <h3>VOID EVO</h3>
-                    <p>Damage: 60</p>
-                    <p>Magazine: 25</p>
-                    <button onclick="equipGun('VOID EVO')">EQUIP</button>
+
+                    <div class="stats">
+                        <span>DAMAGE <b>60</b></span>
+                        <span>RATE <b>HIGH</b></span>
+                        <span>MAG <b>25</b></span>
+                    </div>
+
+                    <button onclick="equipGun('VOID EVO')">
+                        EQUIP
+                    </button>
+
                 </div>
 
             </div>
@@ -199,36 +503,97 @@
         </section>
 
 
-        <!-- BUNDLES -->
+        <!-- ================= BUNDLES ================= -->
 
-        <section id="bundlePanel" class="panel">
+        <section
+            id="bundlePanel"
+            class="panel"
+        >
 
-            <h2>👕 BUNDLES</h2>
+            <div class="sectionTitle">
 
-            <div class="cards">
+                <small>CHARACTER COLLECTION</small>
 
-                <div class="card">
-                    <div class="cardIcon">🔥🧍</div>
-                    <h3>INFERNO BUNDLE</h3>
-                    <p>Inferno Armor</p>
-                    <p>Fire Backpack</p>
-                    <button onclick="equipBundle('INFERNO BUNDLE')">EQUIP</button>
+                <h2>
+                    GUDU
+                    <span>BUNDLES</span>
+                </h2>
+
+            </div>
+
+
+            <div class="bundleGrid">
+
+
+                <div class="bundleCard infernoBundle">
+
+                    <div class="bundleCharacter">
+
+                        <div class="miniHead"></div>
+                        <div class="miniBody"></div>
+                        <div class="miniLeg l"></div>
+                        <div class="miniLeg r"></div>
+
+                    </div>
+
+                    <div>
+                        <small>LEGENDARY</small>
+                        <h3>INFERNO</h3>
+                        <p>Flame tactical outfit</p>
+                    </div>
+
+                    <button onclick="equipBundle('INFERNO BUNDLE')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">⚡🧍</div>
-                    <h3>THUNDER BUNDLE</h3>
-                    <p>Thunder Armor</p>
-                    <p>Storm Backpack</p>
-                    <button onclick="equipBundle('THUNDER BUNDLE')">EQUIP</button>
+
+                <div class="bundleCard thunderBundle">
+
+                    <div class="bundleCharacter">
+
+                        <div class="miniHead"></div>
+                        <div class="miniBody"></div>
+                        <div class="miniLeg l"></div>
+                        <div class="miniLeg r"></div>
+
+                    </div>
+
+                    <div>
+                        <small>LEGENDARY</small>
+                        <h3>THUNDER</h3>
+                        <p>Storm tactical outfit</p>
+                    </div>
+
+                    <button onclick="equipBundle('THUNDER BUNDLE')">
+                        EQUIP
+                    </button>
+
                 </div>
 
-                <div class="card">
-                    <div class="cardIcon">❄️🧍</div>
-                    <h3>FROST BUNDLE</h3>
-                    <p>Frost Armor</p>
-                    <p>Ice Backpack</p>
-                    <button onclick="equipBundle('FROST BUNDLE')">EQUIP</button>
+
+                <div class="bundleCard frostBundle">
+
+                    <div class="bundleCharacter">
+
+                        <div class="miniHead"></div>
+                        <div class="miniBody"></div>
+                        <div class="miniLeg l"></div>
+                        <div class="miniLeg r"></div>
+
+                    </div>
+
+                    <div>
+                        <small>LEGENDARY</small>
+                        <h3>FROST</h3>
+                        <p>Ice tactical outfit</p>
+                    </div>
+
+                    <button onclick="equipBundle('FROST BUNDLE')">
+                        EQUIP
+                    </button>
+
                 </div>
 
             </div>
@@ -236,27 +601,68 @@
         </section>
 
 
-        <!-- INVENTORY -->
+        <!-- ================= INVENTORY ================= -->
 
-        <section id="inventoryPanel" class="panel">
+        <section
+            id="inventoryPanel"
+            class="panel"
+        >
 
-            <h2>🎒 INVENTORY</h2>
+            <div class="sectionTitle">
 
-            <div class="inventoryBox">
+                <small>YOUR LOADOUT</small>
 
-                <div>
-                    <span>EQUIPPED WEAPON</span>
-                    <strong id="inventoryGun">THUNDER-X EVO</strong>
+                <h2>
+                    PLAYER
+                    <span>INVENTORY</span>
+                </h2>
+
+            </div>
+
+
+            <div class="inventoryGrid">
+
+                <div class="inventoryItem">
+
+                    <small>PRIMARY WEAPON</small>
+
+                    <strong id="inventoryGun">
+                        THUNDER-X EVO
+                    </strong>
+
                 </div>
 
-                <div>
-                    <span>EQUIPPED BUNDLE</span>
-                    <strong id="inventoryBundle">THUNDER BUNDLE</strong>
+
+                <div class="inventoryItem">
+
+                    <small>BUNDLE</small>
+
+                    <strong id="inventoryBundle">
+                        THUNDER BUNDLE
+                    </strong>
+
                 </div>
 
-                <div>
-                    <span>GUDU COINS</span>
-                    <strong>10,000</strong>
+
+                <div class="inventoryItem">
+
+                    <small>GLOO WALL</small>
+
+                    <strong>
+                        GUDU ICE WALL
+                    </strong>
+
+                </div>
+
+
+                <div class="inventoryItem">
+
+                    <small>GRENADES</small>
+
+                    <strong>
+                        5
+                    </strong>
+
                 </div>
 
             </div>
@@ -268,65 +674,181 @@
 </div>
 
 
-<!-- ================= 1V1 LOBBY ================= -->
+
+<!-- ================================================= -->
+<!-- ================= 1V1 LOBBY ===================== -->
+<!-- ================================================= -->
 
 <div id="oneLobby">
 
-    <div class="lobbyTop">
-        <button onclick="close1v1Lobby()">← BACK</button>
-        <h1>GUDU <span>1V1</span></h1>
-        <div></div>
+    <div class="lobbyHeader">
+
+        <button onclick="close1v1Lobby()">
+            ← BACK
+        </button>
+
+        <div>
+            <small>GUDU NETWORK</small>
+            <h1>1V1 <span>ARENA</span></h1>
+        </div>
+
+        <div class="onlineStatus">
+            ● ONLINE
+        </div>
+
     </div>
 
 
-    <div class="matchContainer">
+    <div class="lobbyContent">
 
-        <div class="matchTitle">
+
+        <div class="lobbyTitle">
+
             <small>PRIVATE MATCH</small>
-            <h2>1V1 BOT BATTLE</h2>
+
+            <h2>
+                CHOOSE YOUR
+                <span>FIGHT</span>
+            </h2>
+
         </div>
 
 
-        <div class="versus">
+        <!-- ================= FIGHTERS ================= -->
+
+        <div class="fighters">
+
 
             <!-- PLAYER -->
 
-            <div class="fighter">
+            <div class="fighterSlot playerSlot">
 
-                <div class="fighterAvatar playerAvatar">
-                    🧍
+                <div class="slotLabel">
+                    PLAYER
                 </div>
 
-                <h2>GUDU PLAYER</h2>
 
-                <span>LEVEL 12</span>
+                <div class="humanPreview blue">
 
-                <div class="selectedWeapon">
-                    🔫 <b id="lobbyWeapon">THUNDER-X EVO</b>
+                    <div class="previewShadow"></div>
+
+                    <div class="previewHead">
+                        <div class="previewHair"></div>
+                    </div>
+
+                    <div class="previewNeck"></div>
+
+                    <div class="previewTorso">
+
+                        <div class="chestArmor">
+                            G
+                        </div>
+
+                    </div>
+
+                    <div class="previewArm left"></div>
+                    <div class="previewArm right"></div>
+
+                    <div class="previewHand left"></div>
+                    <div class="previewHand right"></div>
+
+                    <div class="previewLeg left"></div>
+                    <div class="previewLeg right"></div>
+
+                    <div class="previewBoot left"></div>
+                    <div class="previewBoot right"></div>
+
+                    <div class="previewWeapon">
+                        ▬▬▬▬▬
+                    </div>
+
+                </div>
+
+
+                <h3>GUDU PLAYER</h3>
+
+                <small>
+                    LEVEL 12
+                </small>
+
+                <div class="loadoutTag">
+
+                    <b id="lobbyWeapon">
+                        THUNDER-X EVO
+                    </b>
+
                 </div>
 
             </div>
 
 
-            <div class="vs">
-                <span>VS</span>
+
+            <!-- VS -->
+
+            <div class="versusCircle">
+
+                <div>
+                    VS
+                </div>
+
             </div>
+
 
 
             <!-- BOT -->
 
-            <div class="fighter">
+            <div class="fighterSlot botSlot">
 
-                <div class="fighterAvatar botAvatar">
-                    🤖
+                <div class="slotLabel">
+                    OPPONENT
                 </div>
 
-                <h2>GUDU BOT</h2>
 
-                <span id="botLevelText">AI LEVEL 5</span>
+                <div class="humanPreview red">
 
-                <div class="selectedWeapon">
-                    🤖 AI OPPONENT
+                    <div class="previewShadow"></div>
+
+                    <div class="previewHead">
+                        <div class="previewHair"></div>
+                    </div>
+
+                    <div class="previewNeck"></div>
+
+                    <div class="previewTorso">
+
+                        <div class="chestArmor">
+                            AI
+                        </div>
+
+                    </div>
+
+                    <div class="previewArm left"></div>
+                    <div class="previewArm right"></div>
+
+                    <div class="previewHand left"></div>
+                    <div class="previewHand right"></div>
+
+                    <div class="previewLeg left"></div>
+                    <div class="previewLeg right"></div>
+
+                    <div class="previewBoot left"></div>
+                    <div class="previewBoot right"></div>
+
+                    <div class="previewWeapon">
+                        ▬▬▬▬▬
+                    </div>
+
+                </div>
+
+
+                <h3>GUDU BOT</h3>
+
+                <small id="botLevelText">
+                    AI LEVEL 5
+                </small>
+
+                <div class="loadoutTag enemy">
+                    AI COMBATANT
                 </div>
 
             </div>
@@ -334,29 +856,39 @@
         </div>
 
 
-        <div class="difficulty">
+        <!-- ================= DIFFICULTY ================= -->
 
-            <h3>SELECT BOT DIFFICULTY</h3>
+        <div class="difficultyBox">
+
+            <small>AI DIFFICULTY</small>
 
             <div class="difficultyButtons">
 
                 <button
                     id="easyBtn"
-                    onclick="selectDifficulty('easy')">
-                    🟢 EASY
+                    onclick="selectDifficulty('easy')"
+                >
+                    <span>01</span>
+                    EASY
                 </button>
+
 
                 <button
                     id="mediumBtn"
                     class="selected"
-                    onclick="selectDifficulty('medium')">
-                    🟡 MEDIUM
+                    onclick="selectDifficulty('medium')"
+                >
+                    <span>02</span>
+                    MEDIUM
                 </button>
+
 
                 <button
                     id="hardBtn"
-                    onclick="selectDifficulty('hard')">
-                    🔴 HARD
+                    onclick="selectDifficulty('hard')"
+                >
+                    <span>03</span>
+                    HARD
                 </button>
 
             </div>
@@ -364,113 +896,297 @@
         </div>
 
 
-        <div class="matchSettings">
+        <!-- ================= LOADOUT ================= -->
+
+        <div class="battleLoadout">
 
             <div>
-                <small>MODE</small>
-                <b>1V1</b>
-            </div>
 
-            <div>
                 <small>MAP</small>
-                <b>GUDU ISLAND</b>
+
+                <b>
+                    GUDU ISLAND
+                </b>
+
             </div>
 
+
             <div>
+
                 <small>WEAPON</small>
-                <b id="lobbyGun">THUNDER-X EVO</b>
+
+                <b id="lobbyGun">
+                    THUNDER-X EVO
+                </b>
+
+            </div>
+
+
+            <div>
+
+                <small>GLOO WALL</small>
+
+                <b>
+                    READY
+                </b>
+
+            </div>
+
+
+            <div>
+
+                <small>GRENADES</small>
+
+                <b>
+                    ×5
+                </b>
+
             </div>
 
         </div>
 
 
-        <button class="readyButton" onclick="readyMatch()">
-            ⚔️ READY FOR BATTLE
+        <button
+            class="readyButton"
+            onclick="readyMatch()"
+        >
+            READY FOR BATTLE
         </button>
+
 
     </div>
 
 </div>
+
 
 
 <!-- ================= COUNTDOWN ================= -->
 
 <div id="countdown">
 
-    <div class="countText">
-        <small>GET READY</small>
-        <strong id="countNumber">3</strong>
+    <div class="countdownContent">
+
+        <small>
+            MATCH STARTING
+        </small>
+
+        <strong id="countNumber">
+            3
+        </strong>
+
+        <span>
+            GET READY
+        </span>
+
     </div>
 
 </div>
 
 
-<!-- ================= GAME ================= -->
+
+<!-- ================================================= -->
+<!-- ================= GAME SCREEN =================== -->
+<!-- ================================================= -->
 
 <div id="gameScreen">
 
-    <div id="crosshair">+</div>
+    <!-- THREE.JS CANVAS WILL APPEAR HERE -->
+
+
+    <div id="crosshair">
+        <span></span>
+        <i></i>
+    </div>
+
+
+    <!-- PLAYER HUD -->
+
+    <div class="playerHUD">
+
+        <div class="hudProfile">
+
+            <div class="hudAvatar">
+                G
+            </div>
+
+            <div>
+
+                <b>
+                    GUDU PLAYER
+                </b>
+
+                <small>
+                    LEVEL 12
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="healthContainer">
+
+            <div class="healthTop">
+
+                <span>
+                    HP
+                </span>
+
+                <b id="healthText">
+                    100 / 100
+                </b>
+
+            </div>
+
+            <div class="healthBar">
+                <div id="healthFill"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BOT HUD -->
+
+    <div class="enemyHUD">
+
+        <div class="enemyName">
+            GUDU BOT
+        </div>
+
+        <div class="enemyHealth">
+
+            <div id="botHealthFill"></div>
+
+        </div>
+
+        <small id="botHealth">
+            100
+        </small>
+
+    </div>
+
+
+    <!-- AMMO -->
+
+    <div class="ammoHUD">
+
+        <small>
+            AMMO
+        </small>
+
+        <strong id="ammoCount">
+            35
+        </strong>
+
+        <span>
+            / 175
+        </span>
+
+    </div>
+
+
+    <!-- WEAPON SLOT -->
+
+    <div class="weaponHUD">
+
+        <small>
+            CURRENT WEAPON
+        </small>
+
+        <b id="currentWeaponHUD">
+            THUNDER-X EVO
+        </b>
+
+    </div>
+
+
+    <!-- BATTLE ITEMS -->
+
+    <div class="battleItems">
+
+        <button
+            id="grenadeButton"
+            onclick="throwGrenade()"
+        >
+
+            <span>
+                💣
+            </span>
+
+            <small>
+                F
+            </small>
+
+        </button>
+
+
+        <button
+            id="glooButton"
+            onclick="deployGlooWall()"
+        >
+
+            <span>
+                🧊
+            </span>
+
+            <small>
+                G
+            </small>
+
+        </button>
+
+    </div>
+
+
+    <!-- CONTROLS -->
+
+    <div class="gameControls">
+
+        <span>
+            WASD MOVE
+        </span>
+
+        <span>
+            SHIFT SPRINT
+        </span>
+
+        <span>
+            SPACE JUMP
+        </span>
+
+        <span>
+            CLICK SHOOT
+        </span>
+
+        <span>
+            R RELOAD
+        </span>
+
+        <span>
+            F GRENADE
+        </span>
+
+        <span>
+            G GLOO
+        </span>
+
+    </div>
+
+
+    <button
+        class="leaveGame"
+        onclick="backToLobby()"
+    >
+        LEAVE MATCH
+    </button>
+
 
     <div id="gameMessage"></div>
 
-
-    <div class="gameTop">
-
-        <div class="hud">
-            ❤️ <span id="healthText">100 / 100</span>
-        </div>
-
-        <div class="hud">
-            💀 <span id="killCount">0</span>
-        </div>
-
-    </div>
-
-
-    <div class="botHud">
-
-        <b>🤖 GUDU BOT</b>
-
-        <div class="botHealthOuter">
-            <div id="botHealthFill"></div>
-        </div>
-
-        <span id="botHealth">100</span>
-
-    </div>
-
-
-    <div class="playerHealth">
-
-        <div id="healthFill"></div>
-
-    </div>
-
-
-    <div class="ammo">
-
-        🔫
-        <span id="ammoCount">35</span>
-
-    </div>
-
-
-    <div class="controls">
-
-        WASD MOVE
-        • SHIFT SPRINT
-        • SPACE JUMP
-        • CLICK SHOOT
-        • R RELOAD
-
-    </div>
-
-
-    <button class="leaveGame" onclick="backToLobby()">
-        ← LEAVE MATCH
-    </button>
-
 </div>
+
 
 
 <script type="module" src="./game.js"></script>

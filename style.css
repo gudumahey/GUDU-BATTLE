@@ -1,2988 +1,2290 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+/* =========================================================
+   GUDU BATTLE ROYALE - SCRIPT
+   1V1 BOT / LOBBY / BATTLE SYSTEM
+========================================================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+const $ = (id) => document.getElementById(id);
+const qs = (s) => document.querySelector(s);
+const qsa = (s) => document.querySelectorAll(s);
+
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+let gameRunning = false;
+let gameStarted = false;
+
+let health = 100;
+let botHealth = 100;
+
+let ammo = 30;
+let maxAmmo = 30;
+
+let grenades = 3;
+let glooWalls = 3;
+
+let currentWeapon = "M4A1";
+let difficulty = "NORMAL";
+
+let shooting = false;
+let reloadTimer = null;
+
+let keys = {};
+
+let playerX = 50;
+let playerY = 75;
+
+let botX = 50;
+let botY = 30;
+
+let botAttackTimer = null;
+let botMoveTimer = null;
+
+
+/* =========================================================
+   LOADING SCREEN
+========================================================= */
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        const loader = $("loadingScreen");
+
+        if (loader) {
+
+            loader.style.opacity = "0";
+
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 500);
+
+        }
+
+    }, 1400);
+
+});
+
+
+/* =========================================================
+   HOME / LOBBY SWITCH
+========================================================= */
+
+function showHome() {
+
+    const home = $("home");
+    const lobby = $("oneLobby");
+    const game = $("gameScreen");
+
+    if (game) game.style.display = "none";
+    if (lobby) lobby.style.display = "none";
+    if (home) home.style.display = "block";
+
+    stopBattle();
+
 }
 
-:root{
-    --cyan:#00eaff;
-    --blue:#247cff;
-    --red:#ff3150;
-    --bg:#02060d;
-    --panel:rgba(8,18,30,.82);
-    --line:rgba(255,255,255,.09);
-}
 
-html,
-body{
-    width:100%;
-    min-height:100%;
-}
+function open1v1Lobby() {
 
-body{
-    background:var(--bg);
-    color:#fff;
-    font-family:Orbitron,Arial,sans-serif;
-    overflow-x:hidden;
-}
+    const home = $("home");
+    const lobby = $("oneLobby");
 
+    if (!lobby) {
 
-/* =====================================================
-   LOADING
-===================================================== */
-
-#loadingScreen{
-    position:fixed;
-    inset:0;
-    z-index:99999;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #123b5d 0%,
-            #06111e 35%,
-            #02050a 75%
+        console.error(
+            "oneLobby element nahi mila. HTML check karo."
         );
 
-    transition:opacity .5s ease;
+        return;
+
+    }
+
+    if (home) home.style.display = "none";
+
+    lobby.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 
-.loadingLogo{
-    font-size:clamp(55px,9vw,100px);
-    font-weight:900;
-    letter-spacing:12px;
 
-    color:#fff;
+/* =========================================================
+   NAV BUTTONS
+========================================================= */
 
-    text-shadow:
-        0 0 10px var(--cyan),
-        0 0 35px var(--cyan),
-        0 0 70px rgba(0,234,255,.5);
-}
+qsa(".navButton").forEach(button => {
 
-.loadingSub{
-    margin-top:-5px;
+    button.addEventListener("click", () => {
 
-    color:var(--cyan);
+        const target = button.dataset.target;
 
-    font-size:12px;
-    letter-spacing:12px;
-}
+        qsa(".navButton").forEach(btn => {
+            btn.classList.remove("active");
+        });
 
-.loadingText{
-    margin-top:35px;
+        button.classList.add("active");
 
-    font-size:9px;
-    letter-spacing:3px;
+        qsa(".panel").forEach(panel => {
+            panel.classList.remove("activePanel");
+        });
 
-    color:rgba(255,255,255,.45);
-}
+        if (target) {
 
-.loadingBar{
-    width:280px;
-    height:4px;
+            const panel = $(target);
 
-    margin-top:15px;
+            if (panel) {
+                panel.classList.add("activePanel");
+            }
 
-    background:#14202c;
-    border-radius:20px;
+        }
 
-    overflow:hidden;
-}
+    });
 
-.loadingBar span{
-    display:block;
-    height:100%;
-    width:0;
+});
 
-    background:linear-gradient(
-        90deg,
-        #00aaff,
-        #00ffff
+
+/* =========================================================
+   FIND 1V1 BUTTONS
+========================================================= */
+
+qsa("[data-1v1]").forEach(button => {
+
+    button.addEventListener("click", open1v1Lobby);
+
+});
+
+
+qsa(".oneVOneButton").forEach(button => {
+
+    button.addEventListener("click", open1v1Lobby);
+
+});
+
+
+/* =========================================================
+   GENERIC 1V1 TEXT BUTTON SUPPORT
+========================================================= */
+
+qsa("button").forEach(button => {
+
+    const text =
+        button.textContent
+            .trim()
+            .toLowerCase();
+
+    if (
+        text.includes("1v1") ||
+        text.includes("1 v 1") ||
+        text.includes("bot battle") ||
+        text.includes("fight bot")
+    ) {
+
+        button.addEventListener(
+            "click",
+            open1v1Lobby
+        );
+
+    }
+
+});
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+const backButton =
+    $("backToHome") ||
+    $("lobbyBack") ||
+    qs(".backButton");
+
+if (backButton) {
+
+    backButton.addEventListener(
+        "click",
+        showHome
     );
 
-    animation:loading 1.2s linear forwards;
 }
 
-@keyframes loading{
-    to{
-        width:100%;
-    }
-}
-
-
-/* =====================================================
-   HOME
-===================================================== */
-
-#home{
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at 80% 15%,
-            rgba(0,234,255,.12),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 15% 80%,
-            rgba(60,80,255,.12),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #020711,
-            #061728 50%,
-            #02050a
-        );
-}
-
-
-/* =====================================================
-   TOP BAR
-===================================================== */
-
-.topbar{
-    height:76px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:0 6%;
-
-    border-bottom:1px solid var(--line);
-
-    background:rgba(2,7,15,.55);
-
-    backdrop-filter:blur(14px);
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    font-size:27px;
-    font-weight:900;
-    letter-spacing:3px;
-}
-
-.brand strong{
-    color:#fff;
-}
-
-.brand span{
-    color:var(--cyan);
-
-    text-shadow:
-        0 0 15px rgba(0,234,255,.5);
-}
-
-.playerProfile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.playerProfile b{
-    display:block;
-    font-size:10px;
-}
-
-.playerProfile small{
-    display:block;
-
-    margin-top:5px;
-
-    font-size:7px;
-
-    color:rgba(255,255,255,.4);
-}
-
-.profileAvatar{
-    width:42px;
-    height:42px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00eaff,
-            #4455ff
-        );
-
-    font-weight:900;
-
-    box-shadow:
-        0 0 20px rgba(0,234,255,.2);
-}
-
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero{
-    min-height:470px;
-
-    max-width:1400px;
-
-    margin:auto;
-
-    padding:
-        50px 7%
-        30px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-}
-
-.heroContent{
-    max-width:650px;
-
-    position:relative;
-
-    z-index:2;
-}
-
-.eyebrow{
-    color:var(--cyan);
-
-    font-size:9px;
-
-    letter-spacing:5px;
-
-    margin-bottom:18px;
-}
-
-.hero h1{
-    font-size:
-        clamp(
-            45px,
-            6.5vw,
-            88px
-        );
-
-    line-height:.92;
-
-    font-weight:900;
-
-    letter-spacing:-3px;
-}
-
-.hero h1 span{
-    display:block;
-
-    color:var(--cyan);
-
-    text-shadow:
-        0 0 20px rgba(0,234,255,.35);
-}
-
-.hero p{
-    max-width:540px;
-
-    margin-top:25px;
-
-    color:rgba(255,255,255,.48);
-
-    font-size:11px;
-
-    line-height:1.8;
-}
-
-.primaryButton{
-    margin-top:28px;
-
-    padding:16px 32px;
-
-    border:0;
-    border-radius:7px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00dfff,
-            #386cff
-        );
-
-    color:#fff;
-
-    font-family:inherit;
-
-    font-size:11px;
-
-    font-weight:900;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 12px 35px rgba(0,200,255,.2);
-
-    transition:.25s;
-}
-
-.primaryButton:hover{
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 18px 45px rgba(0,200,255,.35);
-}
-
-
-/* =====================================================
-   CSS HUMAN HERO CHARACTER
-===================================================== */
-
-.heroCharacter{
-    width:420px;
-    height:430px;
-
-    position:relative;
-
-    display:flex;
-
-    align-items:flex-end;
-
-    justify-content:center;
-}
-
-.characterGlow{
-    position:absolute;
-
-    width:330px;
-    height:330px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,234,255,.2),
-            transparent 68%
-        );
-
-    filter:blur(10px);
-}
-
-.fighter{
-    position:relative;
-
-    width:170px;
-    height:370px;
-
-    z-index:2;
-}
-
-.fighterHead{
-    position:absolute;
-
-    width:72px;
-    height:82px;
-
-    left:49px;
-    top:8px;
-
-    border-radius:
-        42% 42% 46% 46%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #dca27f,
-            #8e543d
-        );
-
-    box-shadow:
-        inset -10px -5px 0 rgba(0,0,0,.12);
-}
-
-.hair{
-    position:absolute;
-
-    top:-5px;
-    left:-2px;
-
-    width:76px;
-    height:32px;
-
-    border-radius:
-        45px 45px 15px 15px;
-
-    background:#10141c;
-
-    transform:rotate(-3deg);
-}
-
-.fighterNeck{
-    position:absolute;
-
-    top:80px;
-    left:70px;
-
-    width:30px;
-    height:30px;
-
-    background:#a8684e;
-}
-
-.fighterBody{
-    position:absolute;
-
-    top:98px;
-    left:37px;
-
-    width:96px;
-    height:125px;
-
-    border-radius:20px 20px 12px 12px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #111b2b,
-            #24364d,
-            #101a29
-        );
-
-    border:2px solid rgba(0,234,255,.3);
-
-    box-shadow:
-        0 0 25px rgba(0,234,255,.08);
-}
-
-.armor{
-    position:absolute;
-
-    inset:15px;
-
-    border:1px solid rgba(0,234,255,.3);
-
-    clip-path:
-        polygon(
-            20% 0,
-            80% 0,
-            100% 30%,
-            85% 100%,
-            15% 100%,
-            0 30%
-        );
-}
-
-.fighterArm{
-    position:absolute;
-
-    width:31px;
-    height:125px;
-
-    top:102px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #111827,
-            #344760
-        );
-}
-
-.leftArm{
-    left:7px;
-
-    transform:
-        rotate(13deg);
-}
-
-.rightArm{
-    right:7px;
-
-    transform:
-        rotate(-25deg);
-}
-
-.fighterHand{
-    position:absolute;
-
-    width:28px;
-    height:30px;
-
-    top:218px;
-
-    border-radius:50%;
-
-    background:#a86a50;
-}
-
-.leftHand{
-    left:0;
-}
-
-.rightHand{
-    right:-3px;
-}
-
-.fighterLeg{
-    position:absolute;
-
-    top:216px;
-
-    width:42px;
-    height:130px;
-
-    border-radius:
-        12px 12px 8px 8px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #0d1520,
-            #263b52
-        );
-}
-
-.leftLeg{
-    left:38px;
-}
-
-.rightLeg{
-    right:38px;
-}
-
-.fighterShoe{
-    position:absolute;
-
-    top:333px;
-
-    width:58px;
-    height:28px;
-
-    border-radius:
-        7px 18px 8px 8px;
-
-    background:#080b10;
-}
-
-.leftShoe{
-    left:23px;
-}
-
-.rightShoe{
-    right:23px;
-}
-
-.heroCharacter .fighterArm.rightArm{
-    transform:
-        rotate(-20deg);
-}
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-.mainNav{
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
-    padding:
-        0 5%
-        35px;
-}
-
-.navButton{
-    min-width:125px;
-
-    padding:13px 18px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:7px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    color:
-        rgba(255,255,255,.55);
-
-    font-family:inherit;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.navButton b{
-    display:block;
-
-    font-size:9px;
-}
-
-.navButton small{
-    display:block;
-
-    margin-top:6px;
-
-    font-size:6px;
-
-    opacity:.45;
-}
-
-.navButton:hover,
-.navButton.active{
-    color:#fff;
-
-    border-color:
-        rgba(0,234,255,.6);
-
-    background:
-        rgba(0,234,255,.07);
-
-    box-shadow:
-        0 0 20px
-        rgba(0,234,255,.06);
-}
-
-
-/* =====================================================
-   CONTENT
-===================================================== */
-
-.mainContent{
-    width:min(1200px,92%);
-
-    margin:auto;
-
-    padding-bottom:100px;
-}
-
-.panel{
-    display:none;
-}
-
-.activePanel{
-    display:block;
-
-    animation:
-        panelIn .35s ease;
-}
-
-@keyframes panelIn{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.sectionTitle{
-    margin-bottom:28px;
-}
-
-.sectionTitle small{
-    color:var(--cyan);
-
-    font-size:8px;
-
-    letter-spacing:4px;
-}
-
-.sectionTitle h2{
-    margin-top:8px;
-
-    font-size:28px;
-
-    letter-spacing:-1px;
-}
-
-.sectionTitle h2 span{
-    color:var(--cyan);
-}
-
-
-/* =====================================================
-   FEATURE CARDS
-===================================================== */
-
-.featureGrid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(250px,1fr)
-        );
-
-    gap:18px;
-}
-
-.featureCard{
-    min-height:250px;
-
-    padding:28px;
-
-    border:
-        1px solid
-        var(--line);
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.015)
-        );
-
-    transition:.25s;
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.featureCard::after{
-    content:"";
-
-    position:absolute;
-
-    width:130px;
-    height:130px;
-
-    right:-50px;
-    bottom:-50px;
-
-    border-radius:50%;
-
-    background:
-        rgba(0,234,255,.08);
-
-    filter:blur(5px);
-}
-
-.featureCard:hover{
-    transform:translateY(-6px);
-
-    border-color:
-        rgba(0,234,255,.4);
-}
-
-.mainFeature{
-    border-color:
-        rgba(0,234,255,.35);
-}
-
-.featureIcon{
-    width:42px;
-    height:42px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:8px;
-
-    background:
-        rgba(0,234,255,.08);
-
-    color:var(--cyan);
-
-    font-weight:900;
-
-    font-size:11px;
-
-    margin-bottom:25px;
-}
-
-.featureCard h3{
-    font-size:14px;
-}
-
-.featureCard p{
-    margin-top:12px;
-
-    color:
-        rgba(255,255,255,.45);
-
-    font-size:10px;
-
-    line-height:1.7;
-}
-
-.featureCard button{
-    margin-top:22px;
-
-    padding:11px 17px;
-
-    border:
-        1px solid
-        rgba(0,234,255,.4);
-
-    border-radius:6px;
-
-    background:
-        rgba(0,234,255,.05);
-
-    color:#fff;
-
-    font-family:inherit;
-
-    font-size:8px;
-
-    cursor:pointer;
-}
-
-.featureCard button:hover{
-    background:var(--cyan);
-
-    color:#031019;
-}
-
-
-/* =====================================================
-   WEAPON GRID
-===================================================== */
-
-.weaponGrid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(220px,1fr)
-        );
-
-    gap:18px;
-}
-
-.weaponCard{
-    padding:22px;
-
-    border:
-        1px solid
-        var(--line);
-
-    border-radius:13px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    transition:.25s;
-}
-
-.weaponCard:hover{
-    transform:translateY(-5px);
-
-    border-color:
-        rgba(0,234,255,.4);
-}
-
-.weaponVisual{
-    height:120px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    margin-bottom:18px;
-
-    color:#dbe8f4;
-
-    font-size:35px;
-
-    transform:rotate(-12deg);
-
-    text-shadow:
-        0 5px 12px rgba(0,0,0,.8);
-}
-
-.weaponVisual.rifle{
-    filter:
-        drop-shadow(
-            0 0 15px
-            rgba(0,234,255,.2)
-        );
-}
-
-.weaponVisual.smg{
-    transform:
-        rotate(-7deg)
-        scale(.85);
-}
-
-.weaponVisual.shotgun{
-    transform:
-        rotate(-5deg)
-        scale(1.1);
-}
-
-.weaponVisual.sniper{
-    transform:
-        rotate(-8deg)
-        scale(1.2);
-}
-
-.weaponVisual.pistol{
-    transform:
-        rotate(-12deg)
-        scale(.7);
-}
-
-.weaponCard h3{
-    font-size:13px;
-}
-
-.stats{
-    display:grid;
-
-    gap:7px;
-
-    margin-top:15px;
-}
-
-.stats span{
-    display:flex;
-
-    justify-content:space-between;
-
-    color:
-        rgba(255,255,255,.35);
-
-    font-size:7px;
-}
-
-.stats b{
-    color:#fff;
-}
-
-.weaponCard button{
-    width:100%;
-
-    margin-top:18px;
-
-    padding:11px;
-
-    border:
-        1px solid
-        rgba(0,234,255,.4);
-
-    border-radius:6px;
-
-    background:
-        rgba(0,234,255,.05);
-
-    color:#fff;
-
-    font-family:inherit;
-
-    font-size:8px;
-
-    cursor:pointer;
-}
-
-.weaponCard button:hover{
-    background:var(--cyan);
-
-    color:#031019;
-}
-
-
-/* =====================================================
-   EVO
-===================================================== */
-
-.evoIcon{
-    width:100px;
-    height:100px;
-
-    margin:10px auto 25px;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    border-radius:50%;
-
-    font-size:40px;
-
-    font-weight:900;
-
-    color:#fff;
-}
-
-.thunder{
-    background:
-        radial-gradient(
-            circle,
-            #00eaff,
-            #1350ff 60%,
-            transparent 70%
-        );
-
-    box-shadow:
-        0 0 45px rgba(0,234,255,.35);
-}
-
-.inferno{
-    background:
-        radial-gradient(
-            circle,
-            #ffcc00,
-            #ff2800 60%,
-            transparent 70%
-        );
-
-    box-shadow:
-        0 0 45px rgba(255,50,0,.3);
-}
-
-.frost{
-    background:
-        radial-gradient(
-            circle,
-            #fff,
-            #38aaff 60%,
-            transparent 70%
-        );
-
-    box-shadow:
-        0 0 45px rgba(70,180,255,.3);
-}
-
-.void{
-    background:
-        radial-gradient(
-            circle,
-            #dc6cff,
-            #4914a5 60%,
-            transparent 70%
-        );
-
-    box-shadow:
-        0 0 45px rgba(160,50,255,.3);
-}
-
-
-/* =====================================================
-   BUNDLES
-===================================================== */
-
-.bundleGrid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px,1fr)
-        );
-
-    gap:18px;
-}
-
-.bundleCard{
-    min-height:280px;
-
-    padding:24px;
-
-    border:
-        1px solid
-        var(--line);
-
-    border-radius:15px;
-
-    display:grid;
-
-    grid-template-columns:120px 1fr;
-
-    align-items:center;
-
-    gap:20px;
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.infernoBundle{
-    background:
-        radial-gradient(
-            circle at 20% 50%,
-            rgba(255,65,20,.3),
-            transparent 55%
-        ),
-        rgba(255,255,255,.025);
-}
-
-.thunderBundle{
-    background:
-        radial-gradient(
-            circle at 20% 50%,
-            rgba(0,234,255,.25),
-            transparent 55%
-        ),
-        rgba(255,255,255,.025);
-}
-
-.frostBundle{
-    background:
-        radial-gradient(
-            circle at 20% 50%,
-            rgba(80,180,255,.3),
-            transparent 55%
-        ),
-        rgba(255,255,255,.025);
-}
-
-.bundleCharacter{
-    height:190px;
-
-    position:relative;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-}
-
-.miniHead{
-    position:absolute;
-
-    top:5px;
-
-    width:42px;
-    height:48px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #dba181,
-            #774433
-        );
-}
-
-.miniBody{
-    position:absolute;
-
-    top:48px;
-
-    width:58px;
-    height:75px;
-
-    border-radius:12px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #151c28,
-            #4b5d71,
-            #121a27
-        );
-}
-
-.miniLeg{
-    position:absolute;
-
-    top:118px;
-
-    width:24px;
-    height:70px;
-
-    border-radius:8px;
-
-    background:#111923;
-}
-
-.miniLeg.l{
-    margin-left:-28px;
-}
-
-.miniLeg.r{
-    margin-left:28px;
-}
-
-.bundleCard > div:nth-child(2) small{
-    color:var(--cyan);
-
-    font-size:7px;
-
-    letter-spacing:2px;
-}
-
-.bundleCard h3{
-    margin-top:7px;
-
-    font-size:18px;
-}
-
-.bundleCard p{
-    margin-top:7px;
-
-    font-size:8px;
-
-    color:
-        rgba(255,255,255,.4);
-}
-
-.bundleCard button{
-    grid-column:1 / -1;
-
-    padding:11px;
-
-    border:
-        1px solid
-        rgba(0,234,255,.35);
-
-    background:
-        rgba(0,234,255,.05);
-
-    color:#fff;
-
-    border-radius:6px;
-
-    font-family:inherit;
-
-    font-size:8px;
-
-    cursor:pointer;
-}
-
-
-/* =====================================================
-   INVENTORY
-===================================================== */
-
-.inventoryGrid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(220px,1fr)
-        );
-
-    gap:15px;
-}
-
-.inventoryItem{
-    min-height:130px;
-
-    padding:25px;
-
-    border:
-        1px solid
-        var(--line);
-
-    border-radius:12px;
-
-    background:
-        rgba(255,255,255,.035);
-}
-
-.inventoryItem small{
-    display:block;
-
-    font-size:7px;
-
-    color:
-        rgba(255,255,255,.35);
-
-    margin-bottom:13px;
-}
-
-.inventoryItem strong{
-    color:var(--cyan);
-
-    font-size:11px;
-}
-
-
-/* =====================================================
-   1V1 LOBBY
-===================================================== */
-
-#oneLobby{
-    display:none;
-
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at 50% 25%,
-            rgba(0,234,255,.11),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #020711,
-            #07182b,
-            #02050a
-        );
-}
-
-.lobbyHeader{
-    height:76px;
-
-    padding:0 5%;
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr 1fr;
-
-    align-items:center;
-
-    border-bottom:
-        1px solid
-        var(--line);
-
-    background:
-        rgba(2,7,15,.5);
-
-    backdrop-filter:blur(12px);
-}
-
-.lobbyHeader > div:nth-child(2){
-    text-align:center;
-}
-
-.lobbyHeader small{
-    color:
-        rgba(255,255,255,.35);
-
-    font-size:7px;
-
-    letter-spacing:3px;
-}
-
-.lobbyHeader h1{
-    margin-top:5px;
-
-    font-size:22px;
-}
-
-.lobbyHeader h1 span{
-    color:var(--cyan);
-}
-
-.lobbyHeader button{
-    width:max-content;
-
-    padding:10px 15px;
-
-    border:
-        1px solid
-        var(--line);
-
-    background:
-        rgba(255,255,255,.04);
-
-    color:#fff;
-
-    border-radius:6px;
-
-    font-family:inherit;
-
-    font-size:8px;
-
-    cursor:pointer;
-}
-
-.onlineStatus{
-    justify-self:end;
-
-    color:#43ff79;
-
-    font-size:7px;
-
-    letter-spacing:2px;
-}
-
-.lobbyContent{
-    width:min(1150px,94%);
-
-    margin:auto;
-
-    padding:
-        45px 0
-        80px;
-}
-
-.lobbyTitle{
-    text-align:center;
-}
-
-.lobbyTitle small{
-    color:var(--cyan);
-
-    font-size:8px;
-
-    letter-spacing:4px;
-}
-
-.lobbyTitle h2{
-    margin-top:9px;
-
-    font-size:30px;
-}
-
-.lobbyTitle h2 span{
-    color:var(--cyan);
-}
-
-
-/* =====================================================
-   LOBBY FIGHTERS
-===================================================== */
-
-.fighters{
-    display:grid;
-
-    grid-template-columns:
-        1fr 100px 1fr;
-
-    align-items:center;
-
-    gap:20px;
-
-    margin-top:40px;
-}
-
-.fighterSlot{
-    min-height:430px;
-
-    padding:20px;
-
-    text-align:center;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.05),
-            rgba(255,255,255,.015)
-        );
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.playerSlot{
-    border-color:
-        rgba(0,234,255,.25);
-}
-
-.botSlot{
-    border-color:
-        rgba(255,49,80,.25);
-}
-
-.slotLabel{
-    display:inline-block;
-
-    padding:7px 12px;
-
-    border-radius:5px;
-
-    background:
-        rgba(0,234,255,.08);
-
-    color:var(--cyan);
-
-    font-size:7px;
-
-    letter-spacing:2px;
-}
-
-.botSlot .slotLabel{
-    color:#ff526b;
-
-    background:
-        rgba(255,49,80,.08);
-}
-
-
-/* =====================================================
-   HUMAN PREVIEW
-===================================================== */
-
-.humanPreview{
-    height:300px;
-
-    width:220px;
-
-    margin:
-        5px auto
-        5px;
-
-    position:relative;
-
-    transform-origin:
-        center bottom;
-
-    animation:
-        characterFloat 3s
-        ease-in-out
-        infinite;
-}
-
-@keyframes characterFloat{
-
-    0%,
-    100%{
-        transform:
-            translateY(0);
-    }
-
-    50%{
-        transform:
-            translateY(-5px);
-    }
-
-}
-
-.previewShadow{
-    position:absolute;
-
-    bottom:0;
-    left:50%;
-
-    width:150px;
-    height:25px;
-
-    transform:
-        translateX(-50%);
-
-    border-radius:50%;
-
-    background:
-        rgba(0,0,0,.55);
-
-    filter:blur(7px);
-}
-
-
-/* HEAD */
-
-.previewHead{
-    position:absolute;
-
-    top:10px;
-    left:82px;
-
-    width:58px;
-    height:67px;
-
-    border-radius:
-        45% 45%
-        47% 47%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #e2aa88,
-            #985d45
-        );
-
-    z-index:5;
-
-    box-shadow:
-        inset -8px -5px
-        rgba(0,0,0,.12);
-}
-
-.previewHair{
-    position:absolute;
-
-    top:-5px;
-    left:-2px;
-
-    width:62px;
-    height:28px;
-
-    border-radius:
-        45px 45px 10px 10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0b1018,
-            #26313e
-        );
-}
-
-.previewHair::after{
-    content:"";
-
-    position:absolute;
-
-    right:-4px;
-    top:7px;
-
-    width:18px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#111823;
-
-    transform:rotate(20deg);
-}
-
-
-/* NECK */
-
-.previewNeck{
-    position:absolute;
-
-    top:70px;
-    left:98px;
-
-    width:28px;
-    height:28px;
-
-    background:#a86b51;
-
-    z-index:2;
-}
-
-
-/* TORSO */
-
-.previewTorso{
-    position:absolute;
-
-    top:83px;
-    left:60px;
-
-    width:105px;
-    height:120px;
-
-    border-radius:
-        18px 18px
-        12px 12px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #111a27,
-            #344a61,
-            #101927
-        );
-
-    border:
-        2px solid
-        rgba(0,234,255,.25);
-
-    z-index:3;
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.35);
-}
-
-.red .previewTorso{
-    border-color:
-        rgba(255,49,80,.3);
-
-    background:
-        linear-gradient(
-            90deg,
-            #24131a,
-            #66303a,
-            #211017
-        );
-}
-
-.chestArmor{
-    position:absolute;
-
-    inset:14px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border:
-        1px solid
-        rgba(0,234,255,.35);
-
-    clip-path:
-        polygon(
-            18% 0,
-            82% 0,
-            100% 25%,
-            88% 100%,
-            12% 100%,
-            0 25%
-        );
-
-    color:var(--cyan);
-
-    font-size:18px;
-
-    font-weight:900;
-}
-
-.red .chestArmor{
-    color:#ff536b;
-
-    border-color:
-        rgba(255,49,80,.4);
-}
-
-
-/* ARMS */
-
-.previewArm{
-    position:absolute;
-
-    top:89px;
-
-    width:32px;
-    height:115px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #101925,
-            #35495e
-        );
-
-    z-index:1;
-}
-
-.previewArm.left{
-    left:30px;
-
-    transform:
-        rotate(12deg);
-}
-
-.previewArm.right{
-    right:27px;
-
-    transform:
-        rotate(-22deg);
-}
-
-.red .previewArm{
-    background:
-        linear-gradient(
-            90deg,
-            #24151b,
-            #65343e
-        );
-}
-
-
-/* HANDS */
-
-.previewHand{
-    position:absolute;
-
-    top:194px;
-
-    width:27px;
-    height:28px;
-
-    border-radius:50%;
-
-    background:#a86a50;
-
-    z-index:4;
-}
-
-.previewHand.left{
-    left:24px;
-}
-
-.previewHand.right{
-    right:19px;
-}
-
-
-/* LEGS */
-
-.previewLeg{
-    position:absolute;
-
-    top:195px;
-
-    width:42px;
-    height:88px;
-
-    border-radius:
-        10px 10px
-        8px 8px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #0c121b,
-            #2a3c50
-        );
-
-    z-index:1;
-}
-
-.previewLeg.left{
-    left:59px;
-}
-
-.previewLeg.right{
-    right:59px;
-}
-
-.red .previewLeg{
-    background:
-        linear-gradient(
-            90deg,
-            #171016,
-            #40262d
-        );
-}
-
-
-/* BOOTS */
-
-.previewBoot{
-    position:absolute;
-
-    top:270px;
-
-    width:55px;
-    height:24px;
-
-    border-radius:
-        5px 16px
-        8px 7px;
-
-    background:#080b10;
-
-    z-index:2;
-}
-
-.previewBoot.left{
-    left:45px;
-}
-
-.previewBoot.right{
-    right:45px;
-}
-
-
-/* WEAPON */
-
-.previewWeapon{
-    position:absolute;
-
-    top:145px;
-    right:-8px;
-
-    width:92px;
-    height:17px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-        linear-gradient(
-            90deg,
-            #111,
-            #556272
-        );
-
-    border-radius:4px;
-
-    color:#dcecff;
-
-    font-size:17px;
-
-    letter-spacing:-5px;
-
-    transform:
-        rotate(-35deg);
-
-    z-index:6;
-
-    box-shadow:
-        0 5px 10px
-        rgba(0,0,0,.4);
-}
-
-
-/* FIGHTER TEXT */
-
-.fighterSlot h3{
-    font-size:14px;
-}
-
-.fighterSlot > small{
-    display:block;
-
-    margin-top:7px;
-
-    color:
-        rgba(255,255,255,.35);
-
-    font-size:7px;
-}
-
-.loadoutTag{
-    display:inline-block;
-
-    margin-top:13px;
-
-    padding:8px 12px;
-
-    border-radius:5px;
-
-    background:
-        rgba(0,234,255,.06);
-
-    border:
-        1px solid
-        rgba(0,234,255,.2);
-
-    color:var(--cyan);
-
-    font-size:7px;
-}
-
-.loadoutTag.enemy{
-    color:#ff536b;
-
-    border-color:
-        rgba(255,49,80,.2);
-
-    background:
-        rgba(255,49,80,.05);
-}
-
-
-/* VS */
-
-.versusCircle{
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-}
-
-.versusCircle div{
-    width:72px;
-    height:72px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    border:
-        2px solid
-        rgba(0,234,255,.4);
-
-    color:#fff;
-
-    font-size:15px;
-
-    font-weight:900;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,234,255,.15),
-            transparent
-        );
-
-    box-shadow:
-        0 0 35px
-        rgba(0,234,255,.15);
-}
-
 
-/* =====================================================
+/* =========================================================
    DIFFICULTY
-===================================================== */
+========================================================= */
 
-.difficultyBox{
-    margin-top:30px;
+qsa(".difficultyButtons button").forEach(button => {
 
-    padding:22px;
+    button.addEventListener("click", () => {
 
-    border:
-        1px solid
-        var(--line);
+        qsa(".difficultyButtons button")
+            .forEach(btn => {
+                btn.classList.remove("selected");
+            });
 
-    border-radius:12px;
+        button.classList.add("selected");
 
-    background:
-        rgba(255,255,255,.025);
+        difficulty =
+            button.dataset.difficulty ||
+            button.textContent
+                .trim()
+                .toUpperCase();
 
-    text-align:center;
-}
-
-.difficultyBox > small{
-    font-size:7px;
-
-    color:
-        rgba(255,255,255,.35);
-
-    letter-spacing:3px;
-}
-
-.difficultyButtons{
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
-
-    margin-top:17px;
-
-    flex-wrap:wrap;
-}
-
-.difficultyButtons button{
-    min-width:140px;
-
-    padding:13px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:10px;
-
-    border:
-        1px solid
-        var(--line);
-
-    background:
-        rgba(255,255,255,.035);
-
-    color:
-        rgba(255,255,255,.55);
-
-    border-radius:6px;
-
-    font-family:inherit;
-
-    font-size:8px;
-
-    cursor:pointer;
-}
-
-.difficultyButtons button span{
-    opacity:.35;
-}
-
-.difficultyButtons button.selected{
-    color:#fff;
-
-    border-color:
-        rgba(0,234,255,.6);
-
-    background:
-        rgba(0,234,255,.09);
-
-    box-shadow:
-        0 0 25px
-        rgba(0,234,255,.07);
-}
-
-
-/* =====================================================
-   BATTLE LOADOUT
-===================================================== */
-
-.battleLoadout{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:10px;
-
-    margin-top:15px;
-}
-
-.battleLoadout div{
-    padding:15px;
-
-    text-align:center;
-
-    border:
-        1px solid
-        var(--line);
-
-    border-radius:8px;
-
-    background:
-        rgba(255,255,255,.025);
-}
-
-.battleLoadout small{
-    display:block;
-
-    font-size:6px;
-
-    color:
-        rgba(255,255,255,.3);
-
-    margin-bottom:8px;
-}
-
-.battleLoadout b{
-    color:var(--cyan);
-
-    font-size:8px;
-}
-
-.readyButton{
-    display:block;
-
-    margin:25px auto 0;
-
-    padding:17px 48px;
-
-    border:0;
-
-    border-radius:7px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00dfff,
-            #386cff
+        console.log(
+            "Difficulty:",
+            difficulty
         );
 
-    color:#fff;
+    });
 
-    font-family:inherit;
+});
 
-    font-size:10px;
 
-    font-weight:900;
+/* =========================================================
+   DEFAULT DIFFICULTY
+========================================================= */
 
-    cursor:pointer;
+const firstDifficulty =
+    qs(".difficultyButtons button");
 
-    box-shadow:
-        0 12px 35px
-        rgba(0,200,255,.18);
+if (firstDifficulty) {
 
-    transition:.25s;
-}
+    firstDifficulty.classList.add(
+        "selected"
+    );
 
-.readyButton:hover{
-    transform:
-        translateY(-3px)
-        scale(1.02);
-
-    box-shadow:
-        0 18px 45px
-        rgba(0,200,255,.35);
 }
 
 
-/* =====================================================
+/* =========================================================
+   READY BUTTON
+========================================================= */
+
+const readyButton =
+    $("readyButton") ||
+    qs(".readyButton");
+
+if (readyButton) {
+
+    readyButton.addEventListener(
+        "click",
+        startMatchmaking
+    );
+
+}
+
+
+/* =========================================================
+   START MATCHMAKING
+========================================================= */
+
+function startMatchmaking() {
+
+    if (gameStarted) return;
+
+    const button =
+        $("readyButton") ||
+        qs(".readyButton");
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.textContent =
+            "MATCH FOUND...";
+
+    }
+
+    showMessage(
+        "BOT FOUND",
+        1000
+    );
+
+    setTimeout(() => {
+
+        startCountdown();
+
+    }, 1000);
+
+}
+
+
+/* =========================================================
    COUNTDOWN
-===================================================== */
+========================================================= */
 
-#countdown{
-    display:none;
+function startCountdown() {
 
-    position:fixed;
+    const countdown =
+        $("countdown");
 
-    inset:0;
+    if (!countdown) {
 
-    z-index:10000;
+        startBattle();
 
-    align-items:center;
-    justify-content:center;
+        return;
 
-    background:
-        rgba(0,4,10,.92);
-}
+    }
 
-.countdownContent{
-    text-align:center;
-}
+    countdown.style.display =
+        "flex";
 
-.countdownContent small{
-    display:block;
+    const number =
+        countdown.querySelector("strong");
 
-    color:var(--cyan);
+    const label =
+        countdown.querySelector("span");
 
-    font-size:9px;
+    let count = 3;
 
-    letter-spacing:5px;
-}
+    if (number)
+        number.textContent = count;
 
-.countdownContent strong{
-    display:block;
+    const timer =
+        setInterval(() => {
 
-    margin:10px 0;
+            count--;
 
-    font-size:
-        clamp(100px,18vw,190px);
+            if (count > 0) {
 
-    line-height:1;
+                if (number)
+                    number.textContent =
+                        count;
 
-    text-shadow:
-        0 0 30px var(--cyan),
-        0 0 80px rgba(0,234,255,.35);
-}
+            }
+            else {
 
-.countdownContent span{
-    font-size:10px;
+                clearInterval(timer);
 
-    color:
-        rgba(255,255,255,.4);
+                if (number)
+                    number.textContent =
+                        "GO!";
 
-    letter-spacing:4px;
-}
+                if (label)
+                    label.textContent =
+                        "FIGHT";
 
+                setTimeout(() => {
 
-/* =====================================================
-   GAME SCREEN
-===================================================== */
+                    countdown.style.display =
+                        "none";
 
-#gameScreen{
-    display:none;
+                    startBattle();
 
-    position:fixed;
+                }, 600);
 
-    inset:0;
+            }
 
-    z-index:5000;
+        }, 900);
 
-    background:#000;
-
-    overflow:hidden;
-}
-
-#gameScreen canvas{
-    position:absolute;
-
-    inset:0;
-
-    width:100% !important;
-    height:100% !important;
-
-    display:block;
 }
 
 
-/* CROSSHAIR */
+/* =========================================================
+   START BATTLE
+========================================================= */
 
-#crosshair{
-    position:fixed;
+function startBattle() {
 
-    left:50%;
-    top:50%;
+    gameStarted = true;
+    gameRunning = true;
 
-    width:28px;
-    height:28px;
+    health = 100;
+    botHealth = 100;
 
-    transform:
-        translate(-50%,-50%);
+    ammo = maxAmmo;
 
-    z-index:20;
+    grenades = 3;
+    glooWalls = 3;
 
-    pointer-events:none;
-}
+    playerX = 50;
+    playerY = 75;
 
-#crosshair span,
-#crosshair::before,
-#crosshair::after,
-#crosshair i{
-    content:"";
+    botX = 50;
+    botY = 30;
 
-    position:absolute;
+    updateHUD();
 
-    background:#fff;
+    const home = $("home");
+    const lobby = $("oneLobby");
+    const game = $("gameScreen");
 
-    box-shadow:
-        0 0 5px #000;
-}
+    if (home)
+        home.style.display = "none";
 
-#crosshair span{
-    left:12px;
-    top:3px;
+    if (lobby)
+        lobby.style.display = "none";
 
-    width:2px;
-    height:8px;
-}
+    if (game) {
 
-#crosshair i{
-    left:12px;
-    bottom:3px;
+        game.style.display = "block";
 
-    width:2px;
-    height:8px;
-}
+        initializeGameCanvas();
 
-#crosshair::before{
-    left:3px;
-    top:12px;
+    }
 
-    width:8px;
-    height:2px;
-}
+    startBotAI();
 
-#crosshair::after{
-    right:3px;
-    top:12px;
+    showMessage(
+        "FIGHT!",
+        900
+    );
 
-    width:8px;
-    height:2px;
 }
 
 
-/* =====================================================
-   PLAYER HUD
-===================================================== */
+/* =========================================================
+   STOP BATTLE
+========================================================= */
 
-.playerHUD{
-    position:fixed;
+function stopBattle() {
 
-    top:18px;
-    left:18px;
+    gameRunning = false;
+    gameStarted = false;
 
-    z-index:30;
+    clearInterval(botAttackTimer);
+    clearInterval(botMoveTimer);
 
-    width:280px;
+    botAttackTimer = null;
+    botMoveTimer = null;
 
-    padding:12px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    border-radius:8px;
-
-    background:
-        rgba(0,0,0,.55);
-
-    backdrop-filter:
-        blur(10px);
 }
 
-.hudProfile{
-    display:flex;
 
-    align-items:center;
+/* =========================================================
+   HUD
+========================================================= */
 
-    gap:10px;
+function updateHUD() {
+
+    const hp =
+        $("healthFill");
+
+    const botHp =
+        $("botHealthFill");
+
+    if (hp)
+        hp.style.width =
+            Math.max(0, health) + "%";
+
+    if (botHp)
+        botHp.style.width =
+            Math.max(0, botHealth) + "%";
+
+
+    const ammoNumber =
+        $("ammoNumber");
+
+    if (ammoNumber)
+        ammoNumber.textContent =
+            ammo;
+
+
+    const grenadeNumber =
+        $("grenadeCount");
+
+    if (grenadeNumber)
+        grenadeNumber.textContent =
+            grenades;
+
+
+    const glooNumber =
+        $("glooCount");
+
+    if (glooNumber)
+        glooNumber.textContent =
+            glooWalls;
+
+
+    const weaponName =
+        $("currentWeapon");
+
+    if (weaponName)
+        weaponName.textContent =
+            currentWeapon;
+
 }
 
-.hudAvatar{
-    width:38px;
-    height:38px;
 
-    display:flex;
+/* =========================================================
+   GAME CANVAS
+========================================================= */
 
-    align-items:center;
-    justify-content:center;
+let canvas = null;
+let ctx = null;
 
-    border-radius:50%;
+function initializeGameCanvas() {
 
-    background:
-        linear-gradient(
-            135deg,
-            #00eaff,
-            #415cff
+    canvas =
+        $("battleCanvas") ||
+        $("gameCanvas") ||
+        qs("#gameScreen canvas");
+
+    if (!canvas) {
+
+        canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.id =
+            "battleCanvas";
+
+        const screen =
+            $("gameScreen");
+
+        if (screen)
+            screen.prepend(canvas);
+
+    }
+
+    ctx =
+        canvas.getContext("2d");
+
+    resizeCanvas();
+
+    window.addEventListener(
+        "resize",
+        resizeCanvas
+    );
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+function resizeCanvas() {
+
+    if (!canvas) return;
+
+    canvas.width =
+        window.innerWidth;
+
+    canvas.height =
+        window.innerHeight;
+
+}
+
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function gameLoop() {
+
+    if (
+        gameRunning &&
+        ctx &&
+        canvas
+    ) {
+
+        drawBattlefield();
+
+        updatePlayer();
+
+    }
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =========================================================
+   DRAW BATTLEFIELD
+========================================================= */
+
+function drawBattlefield() {
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+
+    /* SKY */
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            h
         );
 
-    font-size:12px;
+    sky.addColorStop(
+        0,
+        "#07182a"
+    );
 
-    font-weight:900;
-}
+    sky.addColorStop(
+        .45,
+        "#0a3040"
+    );
 
-.hudProfile b{
-    display:block;
+    sky.addColorStop(
+        1,
+        "#07130f"
+    );
 
-    font-size:8px;
-}
+    ctx.fillStyle = sky;
 
-.hudProfile small{
-    display:block;
+    ctx.fillRect(
+        0,
+        0,
+        w,
+        h
+    );
 
-    margin-top:4px;
 
-    font-size:6px;
+    /* SUN */
 
-    opacity:.4;
-}
-
-.healthContainer{
-    margin-top:10px;
-}
-
-.healthTop{
-    display:flex;
-
-    justify-content:space-between;
-
-    font-size:7px;
-
-    margin-bottom:5px;
-}
-
-.healthTop span{
-    color:#58ff86;
-}
-
-.healthTop b{
-    font-size:7px;
-}
-
-.healthBar{
-    width:100%;
-    height:8px;
-
-    border-radius:10px;
-
-    background:
-        rgba(0,0,0,.7);
-
-    overflow:hidden;
-}
-
-#healthFill{
-    width:100%;
-    height:100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ff334d,
-            #ffb52e,
-            #47ff7a
+    const sun =
+        ctx.createRadialGradient(
+            w * .75,
+            h * .18,
+            5,
+            w * .75,
+            h * .18,
+            180
         );
 
-    transition:
-        width .2s ease;
+    sun.addColorStop(
+        0,
+        "rgba(255,230,130,.7)"
+    );
+
+    sun.addColorStop(
+        1,
+        "rgba(255,230,130,0)"
+    );
+
+    ctx.fillStyle = sun;
+
+    ctx.fillRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+
+    /* GROUND */
+
+    ctx.fillStyle =
+        "#16251d";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        h * .48
+    );
+
+    ctx.lineTo(
+        w,
+        h * .48
+    );
+
+    ctx.lineTo(
+        w,
+        h
+    );
+
+    ctx.lineTo(
+        0,
+        h
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* ROAD */
+
+    ctx.fillStyle =
+        "#252d2b";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        w * .42,
+        h * .48
+    );
+
+    ctx.lineTo(
+        w * .58,
+        h * .48
+    );
+
+    ctx.lineTo(
+        w * .72,
+        h
+    );
+
+    ctx.lineTo(
+        w * .28,
+        h
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    /* DISTANT BUILDINGS */
+
+    drawBuilding(
+        w * .08,
+        h * .36,
+        130,
+        150
+    );
+
+    drawBuilding(
+        w * .76,
+        h * .32,
+        170,
+        190
+    );
+
+    drawBuilding(
+        w * .32,
+        h * .38,
+        100,
+        100
+    );
+
+
+    /* CRATES */
+
+    drawCrate(
+        w * .18,
+        h * .65,
+        80
+    );
+
+    drawCrate(
+        w * .77,
+        h * .65,
+        95
+    );
+
+    drawCrate(
+        w * .58,
+        h * .57,
+        65
+    );
+
+
+    /* PLAYER */
+
+    drawFighter(
+        w * playerX / 100,
+        h * playerY / 100,
+        true
+    );
+
+
+    /* BOT */
+
+    drawFighter(
+        w * botX / 100,
+        h * botY / 100,
+        false
+    );
+
 }
 
 
-/* =====================================================
-   ENEMY HUD
-===================================================== */
+/* =========================================================
+   BUILDING
+========================================================= */
 
-.enemyHUD{
-    position:fixed;
+function drawBuilding(
+    x,
+    y,
+    width,
+    height
+) {
 
-    top:18px;
-    left:50%;
+    ctx.fillStyle =
+        "#172633";
 
-    transform:
-        translateX(-50%);
+    ctx.fillRect(
+        x,
+        y,
+        width,
+        height
+    );
 
-    z-index:30;
+    ctx.fillStyle =
+        "rgba(0,234,255,.25)";
 
-    width:300px;
+    for (
+        let yy = y + 20;
+        yy < y + height - 10;
+        yy += 30
+    ) {
 
-    text-align:center;
+        for (
+            let xx = x + 15;
+            xx < x + width - 15;
+            xx += 30
+        ) {
+
+            ctx.fillRect(
+                xx,
+                yy,
+                10,
+                13
+            );
+
+        }
+
+    }
+
 }
 
-.enemyName{
-    font-size:9px;
 
-    margin-bottom:7px;
+/* =========================================================
+   CRATE
+========================================================= */
 
-    font-weight:900;
+function drawCrate(
+    x,
+    y,
+    size
+) {
+
+    ctx.fillStyle =
+        "#6e5133";
+
+    ctx.fillRect(
+        x,
+        y,
+        size,
+        size
+    );
+
+    ctx.strokeStyle =
+        "#24190f";
+
+    ctx.lineWidth = 5;
+
+    ctx.strokeRect(
+        x,
+        y,
+        size,
+        size
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x,
+        y
+    );
+
+    ctx.lineTo(
+        x + size,
+        y + size
+    );
+
+    ctx.moveTo(
+        x + size,
+        y
+    );
+
+    ctx.lineTo(
+        x,
+        y + size
+    );
+
+    ctx.stroke();
+
 }
 
-.enemyHealth{
-    width:100%;
-    height:8px;
 
-    border-radius:10px;
+/* =========================================================
+   DRAW FIGHTER
+========================================================= */
 
-    overflow:hidden;
+function drawFighter(
+    x,
+    y,
+    player
+) {
 
-    background:
-        rgba(0,0,0,.7);
+    const scale =
+        player ? 1 : .95;
 
-    border:
-        1px solid
-        rgba(255,49,80,.2);
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+    ctx.scale(
+        scale,
+        scale
+    );
+
+
+    /* SHADOW */
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.45)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        45,
+        35,
+        10,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* LEGS */
+
+    ctx.fillStyle =
+        player
+            ? "#172333"
+            : "#351b23";
+
+    ctx.fillRect(
+        -25,
+        -55,
+        20,
+        70
+    );
+
+    ctx.fillRect(
+        5,
+        -55,
+        20,
+        70
+    );
+
+
+    /* BOOTS */
+
+    ctx.fillStyle =
+        "#090d12";
+
+    ctx.fillRect(
+        -31,
+        8,
+        28,
+        12
+    );
+
+    ctx.fillRect(
+        3,
+        8,
+        28,
+        12
+    );
+
+
+    /* BODY */
+
+    ctx.fillStyle =
+        player
+            ? "#253b50"
+            : "#592d39";
+
+    roundRect(
+        ctx,
+        -42,
+        -135,
+        84,
+        85,
+        12
+    );
+
+    ctx.fill();
+
+
+    /* ARM LEFT */
+
+    ctx.fillStyle =
+        player
+            ? "#182638"
+            : "#3c2028";
+
+    roundRect(
+        ctx,
+        -67,
+        -125,
+        22,
+        75,
+        10
+    );
+
+    ctx.fill();
+
+
+    /* ARM RIGHT */
+
+    roundRect(
+        ctx,
+        45,
+        -125,
+        22,
+        75,
+        10
+    );
+
+    ctx.fill();
+
+
+    /* HEAD */
+
+    ctx.fillStyle =
+        "#c78566";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        -162,
+        31,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* HAIR */
+
+    ctx.fillStyle =
+        "#111722";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        -173,
+        32,
+        Math.PI,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.fillRect(
+        -31,
+        -174,
+        62,
+        15
+    );
+
+
+    /* ARMOR */
+
+    ctx.strokeStyle =
+        player
+            ? "#00eaff"
+            : "#ff425e";
+
+    ctx.lineWidth = 2;
+
+    ctx.strokeRect(
+        -25,
+        -120,
+        50,
+        50
+    );
+
+
+    /* WEAPON */
+
+    ctx.fillStyle =
+        "#111820";
+
+    ctx.save();
+
+    ctx.rotate(
+        player
+            ? -.25
+            : .25
+    );
+
+    ctx.fillRect(
+        18,
+        -102,
+        70,
+        12
+    );
+
+    ctx.fillRect(
+        72,
+        -108,
+        18,
+        8
+    );
+
+    ctx.restore();
+
+
+    /* NAME TAG */
+
+    ctx.font =
+        "bold 11px Orbitron";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillStyle =
+        player
+            ? "#00eaff"
+            : "#ff536b";
+
+    ctx.fillText(
+        player
+            ? "YOU"
+            : "BOT",
+        0,
+        -210
+    );
+
+
+    ctx.restore();
+
 }
 
-#botHealthFill{
-    width:100%;
-    height:100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            #ff1f43,
-            #ff6b3d
+/* =========================================================
+   ROUND RECT
+========================================================= */
+
+function roundRect(
+    context,
+    x,
+    y,
+    width,
+    height,
+    radius
+) {
+
+    context.beginPath();
+
+    context.roundRect(
+        x,
+        y,
+        width,
+        height,
+        radius
+    );
+
+}
+
+
+/* =========================================================
+   PLAYER MOVEMENT
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        keys[event.key.toLowerCase()] =
+            true;
+
+
+        if (
+            event.key.toLowerCase() ===
+            "r"
+        ) {
+
+            reload();
+
+        }
+
+
+        if (
+            event.key.toLowerCase() ===
+            "g"
+        ) {
+
+            throwGrenade();
+
+        }
+
+
+        if (
+            event.key.toLowerCase() ===
+            "f"
+        ) {
+
+            deployGlooWall();
+
+        }
+
+
+        if (
+            event.code === "Space"
+        ) {
+
+            shoot();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    event => {
+
+        keys[event.key.toLowerCase()] =
+            false;
+
+    }
+);
+
+
+function updatePlayer() {
+
+    if (!gameRunning)
+        return;
+
+    const speed =
+        0.7;
+
+    if (keys["a"])
+        playerX -= speed;
+
+    if (keys["d"])
+        playerX += speed;
+
+    if (keys["w"])
+        playerY -= speed;
+
+    if (keys["s"])
+        playerY += speed;
+
+
+    playerX =
+        Math.max(
+            8,
+            Math.min(
+                92,
+                playerX
+            )
         );
 
-    transition:
-        width .2s ease;
-}
+    playerY =
+        Math.max(
+            18,
+            Math.min(
+                90,
+                playerY
+            )
+        );
 
-.enemyHUD small{
-    display:block;
-
-    margin-top:5px;
-
-    font-size:6px;
-
-    opacity:.5;
 }
 
 
-/* =====================================================
-   AMMO
-===================================================== */
+/* =========================================================
+   MOUSE SHOOTING
+========================================================= */
 
-.ammoHUD{
-    position:fixed;
+document.addEventListener(
+    "mousedown",
+    event => {
 
-    right:20px;
-    bottom:55px;
+        if (
+            event.button === 0 &&
+            gameRunning
+        ) {
 
-    z-index:30;
+            shoot();
 
-    padding:15px 22px;
+        }
 
-    border:
-        1px solid
-        rgba(255,255,255,.1);
+    }
+);
 
-    border-radius:8px;
 
-    background:
-        rgba(0,0,0,.65);
+/* =========================================================
+   SHOOT
+========================================================= */
 
-    text-align:right;
-}
+function shoot() {
 
-.ammoHUD small{
-    display:block;
+    if (!gameRunning)
+        return;
 
-    font-size:6px;
+    if (ammo <= 0) {
 
-    color:
-        rgba(255,255,255,.4);
+        showMessage(
+            "RELOAD!",
+            600
+        );
 
-    margin-bottom:3px;
-}
+        return;
 
-.ammoHUD strong{
-    font-size:30px;
-
-    line-height:1;
-}
-
-.ammoHUD span{
-    font-size:9px;
-
-    opacity:.35;
-}
-
-
-/* =====================================================
-   CURRENT WEAPON
-===================================================== */
-
-.weaponHUD{
-    position:fixed;
-
-    left:20px;
-    bottom:55px;
-
-    z-index:30;
-
-    padding:12px 16px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    border-radius:7px;
-
-    background:
-        rgba(0,0,0,.6);
-}
-
-.weaponHUD small{
-    display:block;
-
-    font-size:6px;
-
-    opacity:.35;
-
-    margin-bottom:5px;
-}
-
-.weaponHUD b{
-    color:var(--cyan);
-
-    font-size:9px;
-}
-
-
-/* =====================================================
-   GRENADE / GLOO
-===================================================== */
-
-.battleItems{
-    position:fixed;
-
-    right:20px;
-    bottom:145px;
-
-    z-index:35;
-
-    display:flex;
-
-    gap:10px;
-}
-
-.battleItems button{
-    width:62px;
-    height:62px;
-
-    position:relative;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border:
-        1px solid
-        rgba(255,255,255,.13);
-
-    border-radius:10px;
-
-    background:
-        rgba(0,0,0,.65);
-
-    color:#fff;
-
-    cursor:pointer;
-
-    backdrop-filter:
-        blur(8px);
-
-    transition:.2s;
-}
-
-.battleItems button:hover{
-    border-color:
-        var(--cyan);
-
-    transform:
-        translateY(-3px);
-}
-
-.battleItems button span{
-    font-size:25px;
-}
-
-.battleItems button small{
-    position:absolute;
-
-    right:5px;
-    bottom:4px;
-
-    font-size:7px;
-
-    color:var(--cyan);
-
-    font-weight:900;
-}
-
-
-/* =====================================================
-   CONTROLS
-===================================================== */
-
-.gameControls{
-    position:fixed;
-
-    left:50%;
-    bottom:15px;
-
-    transform:
-        translateX(-50%);
-
-    z-index:30;
-
-    display:flex;
-
-    gap:12px;
-
-    padding:8px 13px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:6px;
-
-    background:
-        rgba(0,0,0,.5);
-
-    color:
-        rgba(255,255,255,.55);
-
-    font-size:6px;
-
-    white-space:nowrap;
-}
-
-
-/* =====================================================
-   LEAVE
-===================================================== */
-
-.leaveGame{
-    position:fixed;
-
-    right:20px;
-    top:20px;
-
-    z-index:50;
-
-    padding:10px 15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    border-radius:6px;
-
-    background:
-        rgba(0,0,0,.65);
-
-    color:#fff;
-
-    font-family:inherit;
-
-    font-size:7px;
-
-    cursor:pointer;
-}
-
-.leaveGame:hover{
-    border-color:#ff3150;
-
-    color:#ff6075;
-}
-
-
-/* =====================================================
-   GAME MESSAGE
-===================================================== */
-
-#gameMessage{
-    position:fixed;
-
-    left:50%;
-    top:28%;
-
-    transform:
-        translate(-50%,-50%);
-
-    z-index:80;
-
-    font-size:30px;
-
-    font-weight:900;
-
-    opacity:0;
-
-    pointer-events:none;
-
-    text-shadow:
-        0 0 15px #000,
-        0 0 30px rgba(0,234,255,.4);
-
-    transition:
-        opacity .2s ease,
-        transform .2s ease;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:800px){
-
-    .hero{
-        min-height:auto;
-
-        padding-top:50px;
     }
 
-    .heroCharacter{
-        display:none;
+    ammo--;
+
+    updateHUD();
+
+
+    /* HIT CHANCE */
+
+    const distance =
+        Math.abs(
+            playerX - botX
+        ) +
+        Math.abs(
+            playerY - botY
+        );
+
+    let hitChance =
+        difficulty === "HARD"
+            ? .78
+            : difficulty === "EASY"
+                ? .95
+                : .87;
+
+
+    if (distance > 35)
+        hitChance *= .45;
+
+    else if (distance > 20)
+        hitChance *= .7;
+
+
+    if (
+        Math.random() <
+        hitChance
+    ) {
+
+        const damage =
+            currentWeapon === "AWM"
+                ? 48
+                : currentWeapon === "M1887"
+                    ? 38
+                    : currentWeapon === "MP40"
+                        ? 18
+                        : 22;
+
+        damageBot(
+            damage
+        );
+
+        showHitMarker();
+
+    }
+    else {
+
+        showMessage(
+            "MISS",
+            300
+        );
+
     }
 
-    .hero h1{
-        font-size:55px;
-    }
 
-    .fighters{
-        grid-template-columns:1fr;
-    }
+    if (ammo <= 0) {
 
-    .versusCircle{
-        margin:-5px 0;
-    }
+        setTimeout(
+            reload,
+            400
+        );
 
-    .fighterSlot{
-        min-height:390px;
-    }
-
-    .battleLoadout{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .gameControls{
-        display:none;
-    }
-
-    .playerHUD{
-        width:220px;
-    }
-
-    .enemyHUD{
-        width:220px;
     }
 
 }
 
-@media(max-width:500px){
 
-    .topbar{
-        padding:0 4%;
-    }
+/* =========================================================
+   BOT DAMAGE
+========================================================= */
 
-    .brand{
-        font-size:20px;
-    }
+function damageBot(
+    damage
+) {
 
-    .playerProfile{
-        display:none;
-    }
+    botHealth =
+        Math.max(
+            0,
+            botHealth - damage
+        );
 
-    .hero{
-        padding:
-            40px 5%;
-    }
+    updateHUD();
 
-    .hero h1{
-        font-size:46px;
-    }
+    if (
+        botHealth <= 0
+    ) {
 
-    .mainNav{
-        padding-left:3%;
-        padding-right:3%;
-    }
+        winBattle();
 
-    .navButton{
-        min-width:90px;
-    }
-
-    .lobbyHeader{
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .lobbyHeader > div:nth-child(2){
-        text-align:right;
-    }
-
-    .onlineStatus{
-        display:none;
-    }
-
-    .battleLoadout{
-        grid-template-columns:1fr;
-    }
-
-    .difficultyButtons{
-        flex-direction:column;
-    }
-
-    .difficultyButtons button{
-        width:100%;
-    }
-
-    .ammoHUD{
-        right:10px;
-        bottom:25px;
-    }
-
-    .weaponHUD{
-        left:10px;
-        bottom:25px;
-    }
-
-    .battleItems{
-        right:10px;
-        bottom:115px;
     }
 
 }
+
+
+/* =========================================================
+   PLAYER DAMAGE
+========================================================= */
+
+function damagePlayer(
+    damage
+) {
+
+    if (!gameRunning)
+        return;
+
+    health =
+        Math.max(
+            0,
+            health - damage
+        );
+
+    updateHUD();
+
+    if (
+        health <= 0
+    ) {
+
+        loseBattle();
+
+    }
+
+}
+
+
+/* =========================================================
+   RELOAD
+========================================================= */
+
+function reload() {
+
+    if (!gameRunning)
+        return;
+
+    if (
+        ammo >= maxAmmo
+    )
+        return;
+
+    if (reloadTimer)
+        return;
+
+
+    showMessage(
+        "RELOADING...",
+        900
+    );
+
+    reloadTimer =
+        setTimeout(
+            () => {
+
+                ammo =
+                    maxAmmo;
+
+                reloadTimer =
+                    null;
+
+                updateHUD();
+
+            },
+            900
+        );
+
+}
+
+
+/* =========================================================
+   BOT AI
+========================================================= */
+
+function startBotAI() {
+
+    clearInterval(
+        botAttackTimer
+    );
+
+    clearInterval(
+        botMoveTimer
+    );
+
+
+    let attackSpeed;
+
+    if (
+        difficulty === "EASY"
+    ) {
+
+        attackSpeed =
+            1800;
+
+    }
+    else if (
+        difficulty === "HARD"
+    ) {
+
+        attackSpeed =
+            700;
+
+    }
+    else {
+
+        attackSpeed =
+            1100;
+
+    }
+
+
+    botAttackTimer =
+        setInterval(
+            () => {
+
+                if (
+                    !gameRunning
+                )
+                    return;
+
+                botShoot();
+
+            },
+            attackSpeed
+        );
+
+
+    botMoveTimer =
+        setInterval(
+            () => {
+
+                if (
+                    !gameRunning
+                )
+                    return;
+
+                moveBot();
+
+            },
+            650
+        );
+
+}
+
+
+/* =========================================================
+   BOT MOVEMENT
+========================================================= */
+
+function moveBot() {
+
+    const direction =
+        Math.random() > .5
+            ? 1
+            : -1;
+
+    botX +=
+        direction *
+        (Math.random() * 5);
+
+    botY +=
+        (Math.random() - .5) *
+        3;
+
+
+    botX =
+        Math.max(
+            10,
+            Math.min(
+                90,
+                botX
+            )
+        );
+
+    botY =
+        Math.max(
+            20,
+            Math.min(
+                60,
+                botY
+            )
+        );
+
+}
+
+
+/* =========================================================
+   BOT SHOOT
+========================================================= */
+
+function botShoot() {
+
+    const distance =
+        Math.abs(
+            botX - playerX
+        ) +
+        Math.abs(
+            botY - playerY
+        );
+
+    let chance;
+
+    if (
+        difficulty === "EASY"
+    ) {
+
+        chance = .3;
+
+    }
+    else if (
+        difficulty === "HARD"
+    ) {
+
+        chance = .78;
+
+    }
+    else {
+
+        chance = .55;
+
+    }
+
+
+    if (distance > 40)
+        chance *= .3;
+
+
+    if (
+        Math.random() <
+        chance
+    ) {
+
+        let damage =
+            difficulty === "HARD"
+                ? 13
+                : difficulty === "EASY"
+                    ? 6
+                    : 9;
+
+        damagePlayer(
+            damage
+        );
+
+        showEnemyShot();
+
+    }
+
+}
+
+
+/* =========================================================
+   GRENADE
+========================================================= */
+
+function throwGrenade() {
+
+    if (!gameRunning)
+        return;
+
+    if (
+        grenades <= 0
+    ) {
+
+        showMessage(
+            "NO GRENADES",
+            700
+        );
+
+        return;
+
+    }
+
+    grenades--;
+
+    updateHUD();
+
+
+    const distance =
+        Math.abs(
+            playerX - botX
+        ) +
+        Math.abs(
+            playerY - botY
+        );
+
+    let damage =
+        distance < 20
+            ? 45
+            : distance < 35
+                ? 25
+                : 10;
+
+
+    setTimeout(
+        () => {
+
+            if (
+                !gameRunning
+            )
+                return;
+
+            damageBot(
+                damage
+            );
+
+            showMessage(
+                "BOOM!",
+                500
+            );
+
+        },
+        650
+    );
+
+}
+
+
+/* =========================================================
+   GLOO WALL
+========================================================= */
+
+function deployGlooWall() {
+
+    if (!gameRunning)
+        return;
+
+    if (
+        glooWalls <= 0
+    ) {
+
+        showMessage(
+            "NO GLOO WALL",
+            700
+        );
+
+        return;
+
+    }
+
+    glooWalls--;
+
+    updateHUD();
+
+    createGlooWall();
+
+    showMessage(
+        "GLOO WALL DEPLOYED",
+        800
+    );
+
+}
+
+
+/* =========================================================
+   GLOO WALL VISUAL
+========================================================= */
+
+function createGlooWall() {
+
+    if (!canvas)
+        return;
+
+    const wall =
+        document.createElement(
+            "div"
+        );
+
+    wall.style.position =
+        "fixed";
+
+    wall.style.left =
+        "50%";
+
+    wall.style.top =
+        "58%";
+
+    wall.style.transform =
+        "translate(-50%,-50%)";
+
+    wall.style.width =
+        "280px";
+
+    wall.style.height =
+        "90px";
+
+    wall.style.zIndex =
+        "12";
+
+    wall.style.pointerEvents =
+        "none";
+
+    wall.style.border =
+        "3px solid rgba(80,220,255,.9)";
+
+    wall.style.borderRadius =
+        "35px 35px 12px 12px";
+
+    wall.style.background =
+        "linear-gradient(135deg,rgba(40,180,255,.55),rgba(180,245,255,.15))";
+
+    wall.style.boxShadow =
+        "0 0 35px rgba(0,220,255,.5), inset 0 0 25px rgba(150,240,255,.25)";
+
+    document.body.appendChild(
+        wall
+    );
+
+
+    setTimeout(
+        () => {
+
+            wall.remove();
+
+        },
+        7000
+    );
+
+}
+
+
+/* =========================================================
+   HIT MARKER
+========================================================= */
+
+function showHitMarker() {
+
+    const marker =
+        document.createElement(
+            "div"
+        );
+
+    marker.textContent =
+        "✕";
+
+    marker.style.position =
+        "fixed";
+
+    marker.style.left =
+        "50%";
+
+    marker.style.top =
+        "50%";
+
+    marker.style.transform =
+        "translate(-50%,-50%)";
+
+    marker.style.color =
+        "#fff";
+
+    marker.style.fontSize =
+        "22px";
+
+    marker.style.fontWeight =
+        "900";
+
+    marker.style.zIndex =
+        "100";
+
+    marker.style.pointerEvents =
+        "none";
+
+    document.body.appendChild(
+        marker
+    );
+
+    setTimeout(
+        () => marker.remove(),
+        180
+    );
+
+}
+
+
+/* =========================================================
+   ENEMY SHOT EFFECT
+========================================================= */
+
+function showEnemyShot() {
+
+    const flash =
+        document.createElement(
+            "div"
+        );
+
+    flash.style.position =
+        "fixed";
+
+    flash.style.inset =
+        "0";
+
+    flash.style.zIndex =
+        "90";
+
+    flash.style.pointerEvents =
+        "none";
+
+    flash.style.background =
+        "rgba(255,40,70,.08)";
+
+    document.body.appendChild(
+        flash
+    );
+
+    setTimeout(
+        () => flash.remove(),
+        120
+    );
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    text,
+    duration = 700
+) {
+
+    let message =
+        $("gameMessage");
+
+    if (!message) {
+
+        message =
+            document.createElement(
+                "div"
+            );
+
+        message.id =
+            "gameMessage";
+
+        document.body.appendChild(
+            message
+        );
+
+    }
+
+    message.textContent =
+        text;
+
+    message.style.opacity =
+        "1";
+
+    message.style.transform =
+        "translate(-50%,-50%) scale(1)";
+
+    setTimeout(
+        () => {
+
+            message.style.opacity =
+                "0";
+
+            message.style.transform =
+                "translate(-50%,-50%) scale(.85)";
+
+        },
+        duration
+    );
+
+}
+
+
+/* =========================================================
+   WIN
+========================================================= */
+
+function winBattle() {
+
+    if (!gameRunning)
+        return;
+
+    gameRunning = false;
+
+    clearInterval(
+        botAttackTimer
+    );
+
+    clearInterval(
+        botMoveTimer
+    );
+
+    showMessage(
+        "VICTORY!",
+        1800
+    );
+
+
+    setTimeout(
+        () => {
+
+            alert(
+                "🏆 VICTORY!\n\nYou defeated the BOT!"
+            );
+
+            showHome();
+
+        },
+        1900
+    );
+
+}
+
+
+/* =========================================================
+   LOSE
+========================================================= */
+
+function loseBattle() {
+
+    if (!gameRunning)
+        return;
+
+    gameRunning = false;
+
+    clearInterval(
+        botAttackTimer
+    );
+
+    clearInterval(
+        botMoveTimer
+    );
+
+    showMessage(
+        "DEFEATED",
+        1800
+    );
+
+
+    setTimeout(
+        () => {
+
+            alert(
+                "💀 DEFEATED!\n\nThe BOT won this round."
+            );
+
+            showHome();
+
+        },
+        1900
+    );
+
+}
+
+
+/* =========================================================
+   WEAPON SELECTION
+========================================================= */
+
+qsa("[data-weapon]").forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                currentWeapon =
+                    button.dataset.weapon;
+
+                updateHUD();
+
+                showMessage(
+                    currentWeapon +
+                    " EQUIPPED",
+                    600
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   TEXT BASED WEAPON BUTTONS
+========================================================= */
+
+qsa(".weaponCard button").forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const card =
+                    button.closest(
+                        ".weaponCard"
+                    );
+
+                if (!card)
+                    return;
+
+                const title =
+                    card.querySelector(
+                        "h3"
+                    );
+
+                if (title) {
+
+                    currentWeapon =
+                        title.textContent
+                            .trim();
+
+                    updateHUD();
+
+                    showMessage(
+                        currentWeapon +
+                        " EQUIPPED",
+                        600
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GRENADE BUTTON
+========================================================= */
+
+qsa("[data-grenade]").forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            throwGrenade
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GLOO BUTTON
+========================================================= */
+
+qsa("[data-gloo]").forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            deployGlooWall
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GAME LEAVE BUTTON
+========================================================= */
+
+qsa(".leaveGame").forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                stopBattle();
+
+                const game =
+                    $("gameScreen");
+
+                if (game)
+                    game.style.display =
+                        "none";
+
+                showHome();
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL EXPORTS
+   HTML onclick ke liye bhi functions available
+========================================================= */
+
+window.open1v1Lobby =
+    open1v1Lobby;
+
+window.startMatchmaking =
+    startMatchmaking;
+
+window.startBattle =
+    startBattle;
+
+window.showHome =
+    showHome;
+
+window.shoot =
+    shoot;
+
+window.reload =
+    reload;
+
+window.throwGrenade =
+    throwGrenade;
+
+window.deployGlooWall =
+    deployGlooWall;
+
+window.openLobby =
+    open1v1Lobby;
+
+window.selectDifficulty =
+    function(name) {
+
+        difficulty =
+            name.toUpperCase();
+
+    };
+
+
+/* =========================================================
+   INITIAL HUD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        updateHUD();
+
+    }
+);

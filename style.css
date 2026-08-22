@@ -6,21 +6,15 @@
     box-sizing: border-box;
 }
 
-html,
 body {
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    background: #030711;
+    background: #020711;
     color: white;
     font-family: Orbitron, sans-serif;
     overflow-x: hidden;
 }
 
 
-/* ================= LOADING ================= */
+/* LOADING */
 
 #loadingScreen {
     position: fixed;
@@ -34,20 +28,18 @@ body {
 
     background:
         radial-gradient(
-            circle at center,
-            #102c50,
-            #02050a 65%
+            circle,
+            #12395b,
+            #02050a 70%
         );
 
-    transition: opacity .6s;
+    transition: opacity .5s;
 }
 
 .loadingLogo {
-    font-size: 85px;
+    font-size: 80px;
     font-weight: 900;
     letter-spacing: 12px;
-
-    color: white;
 
     text-shadow:
         0 0 20px #00eaff,
@@ -55,42 +47,42 @@ body {
 }
 
 .loadingTitle {
-    font-size: 25px;
-    letter-spacing: 14px;
     color: #00eaff;
-    margin-top: -8px;
+    letter-spacing: 12px;
 }
 
 .loadingText {
-    margin-top: 35px;
+    margin-top: 30px;
+    opacity: .5;
     font-size: 11px;
-    letter-spacing: 4px;
-    opacity: .6;
 }
 
 .loadingBar {
     width: 300px;
     height: 5px;
+
+    background: #182231;
+
     margin-top: 20px;
-    background: #172131;
+
     overflow: hidden;
 }
 
 .loadingBar div {
-    width: 100%;
     height: 100%;
+    width: 100%;
 
     background:
         linear-gradient(
             90deg,
             #00eaff,
-            #6c55ff
+            #694dff
         );
 
-    animation: loading 1.3s linear;
+    animation: load 1.2s linear;
 }
 
-@keyframes loading {
+@keyframes load {
     from {
         transform: translateX(-100%);
     }
@@ -101,20 +93,20 @@ body {
 }
 
 
-/* ================= LOBBY ================= */
+/* LOBBY */
 
 #lobby {
     min-height: 100vh;
 
     background:
         radial-gradient(
-            circle at 75% 30%,
-            rgba(0, 220, 255, .13),
+            circle at 75% 20%,
+            rgba(0,220,255,.13),
             transparent 30%
         ),
         radial-gradient(
-            circle at 15% 70%,
-            rgba(93, 70, 255, .12),
+            circle at 20% 80%,
+            rgba(90,60,255,.13),
             transparent 30%
         ),
         linear-gradient(
@@ -125,64 +117,27 @@ body {
         );
 }
 
-#lobby::after {
-    content: "";
 
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        );
-
-    background-size: 50px 50px;
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent
-        );
-}
-
-
-/* ================= HEADER ================= */
+/* HEADER */
 
 header {
-    height: 85px;
+    height: 80px;
 
-    padding:
-        0 6%;
+    padding: 0 6%;
 
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 
     border-bottom:
         1px solid
-        rgba(255,255,255,.07);
-
-    position: relative;
-    z-index: 5;
+        rgba(255,255,255,.08);
 }
 
 .logo {
-    font-size: 28px;
+    font-size: 27px;
     font-weight: 900;
     letter-spacing: 4px;
-
-    text-shadow:
-        0 0 15px
-        rgba(0,220,255,.5);
 }
 
 .logo span {
@@ -199,49 +154,39 @@ header {
 .player small {
     display: block;
     margin-top: 5px;
-    font-size: 9px;
     opacity: .45;
+    font-size: 9px;
 }
 
 .avatar {
     width: 43px;
     height: 43px;
 
-    border-radius: 50%;
-
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
-    font-weight: 900;
+    border-radius: 50%;
 
     background:
         linear-gradient(
             135deg,
             #00eaff,
-            #654dff
+            #694dff
         );
-
-    box-shadow:
-        0 0 20px
-        rgba(0,220,255,.35);
 }
 
 
-/* ================= HERO ================= */
+/* HERO */
 
 .hero {
-    min-height: 450px;
+    min-height: 430px;
 
-    padding:
-        40px 8%;
+    padding: 40px 8%;
 
     display: flex;
-    align-items: center;
     justify-content: space-between;
-
-    position: relative;
-    z-index: 2;
+    align-items: center;
 }
 
 .heroContent {
@@ -249,58 +194,44 @@ header {
 }
 
 .miniTitle {
-    font-size: 12px;
     color: #00eaff;
     letter-spacing: 5px;
-    margin-bottom: 18px;
+    font-size: 11px;
+    margin-bottom: 20px;
 }
 
 .hero h1 {
-    font-size:
-        clamp(60px, 9vw, 125px);
-
-    line-height: .8;
-
-    font-weight: 900;
-
-    letter-spacing: -6px;
+    font-size: clamp(60px,9vw,120px);
+    line-height: .82;
+    letter-spacing: -5px;
 }
 
 .hero h1 span {
-    display: block;
-
     color: #00eaff;
 
     text-shadow:
         0 0 25px
-        rgba(0,220,255,.55);
+        rgba(0,220,255,.5);
 }
 
 .hero p {
-    max-width: 510px;
-
     margin-top: 30px;
-
+    max-width: 500px;
     line-height: 1.7;
-
-    color:
-        rgba(255,255,255,.57);
+    color: rgba(255,255,255,.55);
 }
 
 #playButton {
     margin-top: 28px;
 
+    padding: 16px 30px;
+
     border: none;
-
-    padding:
-        17px 35px;
-
     border-radius: 8px;
 
     color: white;
 
     font-family: inherit;
-
     font-weight: 900;
 
     cursor: pointer;
@@ -312,42 +243,30 @@ header {
             #654dff
         );
 
-    box-shadow:
-        0 0 30px
-        rgba(0,210,255,.25);
-
     transition: .25s;
 }
 
 #playButton:hover {
-    transform:
-        translateY(-4px)
-        scale(1.03);
-
-    box-shadow:
-        0 12px 45px
-        rgba(0,210,255,.4);
+    transform: translateY(-4px) scale(1.03);
 }
 
 
-/* ================= CHARACTER ================= */
+/* CHARACTER */
 
 .heroCharacter {
-    width: 380px;
-    height: 380px;
+    width: 360px;
+    height: 360px;
 
     display: flex;
-    align-items: center;
     justify-content: center;
-
-    position: relative;
+    align-items: center;
 }
 
 .glow {
     position: absolute;
 
-    width: 330px;
-    height: 330px;
+    width: 300px;
+    height: 300px;
 
     border-radius: 50%;
 
@@ -355,51 +274,25 @@ header {
         radial-gradient(
             circle,
             rgba(0,220,255,.3),
-            transparent 68%
+            transparent 70%
         );
-
-    animation: glowPulse 3s infinite;
 }
 
 .character {
-    position: relative;
-
-    font-size: 190px;
+    font-size: 180px;
 
     animation:
-        characterFloat 3s ease-in-out infinite;
-
-    filter:
-        drop-shadow(
-            0 0 25px
-            rgba(0,220,255,.5)
-        );
+        float 3s ease-in-out infinite;
 }
 
-@keyframes characterFloat {
-    0%,100% {
-        transform: translateY(0);
-    }
-
+@keyframes float {
     50% {
         transform: translateY(-15px);
     }
 }
 
-@keyframes glowPulse {
-    0%,100% {
-        transform: scale(.9);
-        opacity: .5;
-    }
 
-    50% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-}
-
-
-/* ================= NAV ================= */
+/* NAV */
 
 .navigation {
     display: flex;
@@ -408,35 +301,30 @@ header {
 
     gap: 12px;
 
-    padding:
-        0 6% 30px;
-
-    position: relative;
-    z-index: 10;
+    padding: 0 6% 30px;
 }
 
 .navButton {
-    min-width: 130px;
+    min-width: 125px;
 
-    padding: 15px 20px;
+    padding: 14px 20px;
 
-    border-radius: 9px;
+    border-radius: 8px;
 
     border:
         1px solid
         rgba(255,255,255,.08);
 
     background:
-        rgba(255,255,255,.035);
+        rgba(255,255,255,.04);
 
-    color:
-        rgba(255,255,255,.6);
+    color: rgba(255,255,255,.6);
 
     font-family: inherit;
 
     cursor: pointer;
 
-    transition: .25s;
+    transition: .2s;
 }
 
 .navButton span {
@@ -445,7 +333,6 @@ header {
     margin-top: 6px;
 
     font-size: 9px;
-
     letter-spacing: 2px;
 }
 
@@ -457,60 +344,33 @@ header {
 
     background:
         rgba(0,220,255,.08);
-
-    box-shadow:
-        0 0 20px
-        rgba(0,220,255,.1);
 }
 
 
-/* ================= PANELS ================= */
+/* PANELS */
 
 #panels {
     max-width: 1200px;
 
     margin: auto;
 
-    padding:
-        10px 25px 80px;
-
-    position: relative;
-    z-index: 5;
+    padding: 10px 25px 80px;
 }
 
 .panel {
     display: none;
-
-    animation:
-        panelOpen .35s ease;
 }
 
 .homePanel {
     display: block;
 }
 
-@keyframes panelOpen {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .panel h2 {
     margin-bottom: 25px;
-
-    font-size: 19px;
-
-    letter-spacing: 2px;
 }
 
 
-/* ================= HOME CARDS ================= */
+/* HOME */
 
 .homeCards {
     display: grid;
@@ -542,10 +402,23 @@ header {
 }
 
 .homeCard:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
 
     border-color:
         rgba(0,220,255,.5);
+}
+
+.specialCard {
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(0,220,255,.15),
+            transparent 50%
+        ),
+        rgba(255,255,255,.035);
+
+    border-color:
+        rgba(0,220,255,.3);
 }
 
 .bigIcon {
@@ -559,6 +432,7 @@ header {
 
 .homeCard p {
     font-size: 11px;
+    line-height: 1.6;
     color: rgba(255,255,255,.5);
 }
 
@@ -567,13 +441,14 @@ header {
 
     margin-top: 20px;
 
-    padding: 11px;
+    padding: 12px;
 
     border:
-        1px solid #00eaff;
+        1px solid
+        #00eaff;
 
     background:
-        rgba(0,220,255,.07);
+        rgba(0,220,255,.08);
 
     color: white;
 
@@ -581,13 +456,18 @@ header {
 
     font-family: inherit;
 
-    font-size: 10px;
-
     cursor: pointer;
+
+    transition: .2s;
+}
+
+.homeCard button:hover {
+    background: #00eaff;
+    color: #031019;
 }
 
 
-/* ================= ITEMS ================= */
+/* CARDS */
 
 .cards {
     display: grid;
@@ -602,9 +482,9 @@ header {
 }
 
 .card {
-    min-height: 250px;
-
     padding: 25px;
+
+    min-height: 245px;
 
     border-radius: 14px;
 
@@ -619,7 +499,7 @@ header {
 }
 
 .card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
 
     border-color:
         rgba(0,220,255,.5);
@@ -627,17 +507,17 @@ header {
 
 .gunIcon {
     font-size: 42px;
-    margin-bottom: 17px;
+    margin-bottom: 16px;
 }
 
 .bundleIcon {
-    font-size: 50px;
-    height: 75px;
+    font-size: 48px;
+    height: 70px;
 }
 
 .card h3 {
     font-size: 14px;
-    margin-bottom: 13px;
+    margin-bottom: 12px;
 }
 
 .card p {
@@ -646,40 +526,27 @@ header {
     color: rgba(255,255,255,.5);
 }
 
-.card small {
-    display: block;
-
-    margin-top: 10px;
-
-    opacity: .4;
-}
-
 .card button {
     width: 100%;
 
     padding: 11px;
 
-    margin-top: 18px;
+    margin-top: 15px;
 
     border:
-        1px solid #00eaff;
+        1px solid
+        #00eaff;
 
     border-radius: 6px;
 
     background:
-        rgba(0,220,255,.06);
+        rgba(0,220,255,.05);
 
     color: white;
 
     font-family: inherit;
 
-    font-size: 10px;
-
-    font-weight: 800;
-
     cursor: pointer;
-
-    transition: .2s;
 }
 
 .card button:hover {
@@ -688,31 +555,7 @@ header {
 }
 
 
-/* ================= EVO ================= */
-
-.evoThunder {
-    box-shadow:
-        inset 0 0 50px
-        rgba(0,220,255,.08);
-}
-
-.evoInferno {
-    box-shadow:
-        inset 0 0 50px
-        rgba(255,50,20,.08);
-}
-
-.evoFrost {
-    box-shadow:
-        inset 0 0 50px
-        rgba(100,220,255,.08);
-}
-
-.evoVoid {
-    box-shadow:
-        inset 0 0 50px
-        rgba(150,50,255,.1);
-}
+/* EVO */
 
 .level {
     width: 100%;
@@ -720,27 +563,27 @@ header {
 
     margin-top: 15px;
 
-    background: #1b2430;
-
-    border-radius: 5px;
+    background: #1a2430;
 
     overflow: hidden;
+
+    border-radius: 5px;
 }
 
 .level div {
-    width: 18%;
+    width: 20%;
     height: 100%;
 
     background:
         linear-gradient(
             90deg,
             #00eaff,
-            #694dff
+            #684dff
         );
 }
 
 
-/* ================= INVENTORY ================= */
+/* INVENTORY */
 
 .inventory {
     display: grid;
@@ -757,11 +600,11 @@ header {
 .inventoryItem {
     padding: 25px;
 
-    border-radius: 12px;
-
     border:
         1px solid
         rgba(255,255,255,.08);
+
+    border-radius: 12px;
 
     background:
         rgba(255,255,255,.035);
@@ -774,13 +617,11 @@ header {
 
     opacity: .45;
 
-    margin-bottom: 13px;
+    margin-bottom: 12px;
 }
 
 .inventoryItem strong {
     color: #00eaff;
-
-    font-size: 13px;
 }
 
 
@@ -812,15 +653,18 @@ header {
 
     z-index: 20;
 
-    font-size: 25px;
-
     color: white;
+
+    font-size: 25px;
 
     pointer-events: none;
 
     text-shadow:
-        0 0 5px black;
+        0 0 6px black;
 }
+
+
+/* TOP HUD */
 
 .gameTop {
     position: fixed;
@@ -832,42 +676,98 @@ header {
 
     gap: 10px;
 
-    z-index: 20;
+    z-index: 30;
 }
 
 .gameStat {
     padding: 10px 15px;
 
-    border-radius: 8px;
-
     background:
-        rgba(0,0,0,.6);
+        rgba(0,0,0,.65);
 
     border:
         1px solid
         rgba(255,255,255,.12);
 
+    border-radius: 8px;
+
     backdrop-filter:
-        blur(10px);
+        blur(8px);
 }
+
+
+/* BOT */
+
+.botBar {
+    position: fixed;
+
+    top: 20px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 300px;
+
+    z-index: 30;
+}
+
+.botName {
+    text-align: center;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+
+    text-shadow:
+        0 0 6px black;
+}
+
+.botHealthOuter {
+    height: 10px;
+
+    background:
+        rgba(0,0,0,.7);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+#botHealthFill {
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff2038,
+            #ff7540
+        );
+
+    transition: width .2s;
+}
+
+
+/* PLAYER HEALTH */
 
 .healthBar {
     position: fixed;
 
     left: 20px;
-    bottom: 70px;
+    bottom: 65px;
 
     width: 240px;
     height: 12px;
 
     background:
-        rgba(0,0,0,.65);
+        rgba(0,0,0,.7);
 
     border-radius: 10px;
 
     overflow: hidden;
 
-    z-index: 20;
+    z-index: 30;
 }
 
 #healthFill {
@@ -878,33 +778,39 @@ header {
         linear-gradient(
             90deg,
             #ff3048,
-            #48ff76
+            #40ff73
         );
 
     transition: width .2s;
 }
 
+
+/* AMMO */
+
 .ammoBox {
     position: fixed;
 
     right: 25px;
-    bottom: 65px;
+    bottom: 60px;
 
     padding: 15px 25px;
 
-    border-radius: 10px;
-
     background:
-        rgba(0,0,0,.65);
+        rgba(0,0,0,.7);
 
     border:
         1px solid
         rgba(255,255,255,.15);
 
+    border-radius: 10px;
+
     font-size: 20px;
 
-    z-index: 20;
+    z-index: 30;
 }
+
+
+/* MESSAGE */
 
 #gameMessage {
     position: fixed;
@@ -915,21 +821,26 @@ header {
     transform:
         translateX(-50%);
 
-    font-size: 25px;
+    z-index: 40;
+
+    font-size: 28px;
 
     font-weight: 900;
-
-    text-shadow:
-        0 0 15px black;
 
     opacity: 0;
 
     transition: .2s;
 
-    z-index: 30;
+    text-shadow:
+        0 0 15px black;
 
     pointer-events: none;
+
+    white-space: nowrap;
 }
+
+
+/* INSTRUCTIONS */
 
 .gameInstructions {
     position: fixed;
@@ -940,46 +851,47 @@ header {
     transform:
         translateX(-50%);
 
+    z-index: 30;
+
     padding: 8px 14px;
 
     background:
-        rgba(0,0,0,.45);
+        rgba(0,0,0,.5);
 
     border-radius: 5px;
 
     font-size: 8px;
 
     opacity: .7;
-
-    z-index: 20;
-
-    white-space: nowrap;
 }
+
+
+/* LOBBY BUTTON */
 
 #backLobby {
     position: fixed;
 
-    top: 20px;
     right: 20px;
+    top: 20px;
+
+    z-index: 40;
 
     padding: 10px 15px;
+
+    color: white;
+
+    background:
+        rgba(0,0,0,.65);
 
     border:
         1px solid
         rgba(255,255,255,.2);
-
-    background:
-        rgba(0,0,0,.6);
-
-    color: white;
 
     border-radius: 6px;
 
     font-family: inherit;
 
     cursor: pointer;
-
-    z-index: 30;
 }
 
 #backLobby:hover {
@@ -987,13 +899,9 @@ header {
 }
 
 
-/* ================= MOBILE ================= */
+/* MOBILE */
 
 @media(max-width:800px) {
-
-    .hero {
-        padding: 35px 7%;
-    }
 
     .heroCharacter {
         display: none;
@@ -1003,16 +911,11 @@ header {
         font-size: 70px;
     }
 
-    .navigation {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .navButton {
-        min-width: 105px;
-    }
-
     .gameInstructions {
         display: none;
+    }
+
+    .botBar {
+        width: 180px;
     }
 }

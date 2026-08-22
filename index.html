@@ -3,32 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>GUDU BATTLE</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= LOADING ================= -->
-
+<!-- LOADING -->
 <div id="loadingScreen">
-
     <div class="loadingLogo">GUDU</div>
-
-    <div class="loadingTitle">
-        BATTLE
-    </div>
-
-    <div class="loadingText">
-        LOADING BATTLEFIELD...
-    </div>
+    <div class="loadingTitle">BATTLE</div>
+    <div class="loadingText">LOADING BATTLEFIELD...</div>
 
     <div class="loadingBar">
         <div></div>
     </div>
-
 </div>
 
 
@@ -37,24 +26,18 @@
 <div id="lobby">
 
     <header>
-
         <div class="logo">
             GUDU<span>BATTLE</span>
         </div>
 
         <div class="player">
-
-            <div class="avatar">
-                G
-            </div>
+            <div class="avatar">G</div>
 
             <div>
                 <b>GUDU PLAYER</b>
                 <small>LEVEL 12</small>
             </div>
-
         </div>
-
     </header>
 
 
@@ -74,31 +57,26 @@
             </h1>
 
             <p>
-                Enter the battlefield, fight your enemies,
-                collect weapons and become the champion.
+                Enter the battlefield, choose your weapon
+                and fight against powerful AI opponents.
             </p>
 
             <button id="playButton">
-                ⚔ PLAY 1V1
+                ⚔️ PLAY 1V1 BOT
             </button>
 
         </div>
 
 
         <div class="heroCharacter">
-
             <div class="glow"></div>
-
-            <div class="character">
-                🧍
-            </div>
-
+            <div class="character">🧍</div>
         </div>
 
     </section>
 
 
-    <!-- NAVIGATION -->
+    <!-- NAV -->
 
     <nav class="navigation">
 
@@ -135,39 +113,43 @@
     </nav>
 
 
-    <!-- ================= PANELS ================= -->
+    <!-- PANELS -->
 
     <main id="panels">
-
 
         <!-- HOME -->
 
         <section id="homePanel" class="panel homePanel">
 
-            <h2>⚔ BATTLE CENTER</h2>
+            <h2>⚔️ BATTLE CENTER</h2>
 
             <div class="homeCards">
 
-                <div class="homeCard">
+                <!-- 1V1 BOT -->
+
+                <div class="homeCard specialCard">
 
                     <div class="bigIcon">
-                        🤖
+                        🤖⚔️
                     </div>
 
                     <h3>
-                        1V1 BOT
+                        1V1 BOT BATTLE
                     </h3>
 
                     <p>
-                        Fight against an AI enemy.
+                        Fight against an AI enemy
+                        in a private 1V1 battle.
                     </p>
 
                     <button onclick="startBattle()">
-                        START BATTLE
+                        🎮 START 1V1 BOT
                     </button>
 
                 </div>
 
+
+                <!-- ARMORY -->
 
                 <div class="homeCard">
 
@@ -176,7 +158,7 @@
                     </div>
 
                     <h3>
-                        WEAPONS
+                        WEAPON ARMORY
                     </h3>
 
                     <p>
@@ -184,11 +166,13 @@
                     </p>
 
                     <button onclick="showPanel('guns')">
-                        OPEN ARMORY
+                        🔫 OPEN ARMORY
                     </button>
 
                 </div>
 
+
+                <!-- EVO -->
 
                 <div class="homeCard">
 
@@ -201,11 +185,11 @@
                     </h3>
 
                     <p>
-                        Upgrade powerful GUDU weapons.
+                        Use powerful upgraded weapons.
                     </p>
 
                     <button onclick="showPanel('evo')">
-                        VIEW EVO
+                        ⚡ VIEW EVO
                     </button>
 
                 </div>
@@ -223,12 +207,8 @@
 
             <div class="cards">
 
-
                 <div class="card">
-
-                    <div class="gunIcon">
-                        🔫
-                    </div>
+                    <div class="gunIcon">🔫</div>
 
                     <h3>GUDU AR</h3>
 
@@ -239,15 +219,11 @@
                     <button onclick="equipGun('GUDU AR')">
                         EQUIP
                     </button>
-
                 </div>
 
 
                 <div class="card">
-
-                    <div class="gunIcon">
-                        🔫
-                    </div>
+                    <div class="gunIcon">🔫</div>
 
                     <h3>GUDU SMG</h3>
 
@@ -258,15 +234,11 @@
                     <button onclick="equipGun('GUDU SMG')">
                         EQUIP
                     </button>
-
                 </div>
 
 
                 <div class="card">
-
-                    <div class="gunIcon">
-                        💥
-                    </div>
+                    <div class="gunIcon">💥</div>
 
                     <h3>GUDU SHOTGUN</h3>
 
@@ -277,15 +249,11 @@
                     <button onclick="equipGun('GUDU SHOTGUN')">
                         EQUIP
                     </button>
-
                 </div>
 
 
                 <div class="card">
-
-                    <div class="gunIcon">
-                        🎯
-                    </div>
+                    <div class="gunIcon">🎯</div>
 
                     <h3>GUDU SNIPER</h3>
 
@@ -296,15 +264,11 @@
                     <button onclick="equipGun('GUDU SNIPER')">
                         EQUIP
                     </button>
-
                 </div>
 
 
                 <div class="card">
-
-                    <div class="gunIcon">
-                        🔫
-                    </div>
+                    <div class="gunIcon">🔫</div>
 
                     <h3>GUDU PISTOL</h3>
 
@@ -315,7 +279,6 @@
                     <button onclick="equipGun('GUDU PISTOL')">
                         EQUIP
                     </button>
-
                 </div>
 
             </div>
@@ -331,26 +294,20 @@
 
             <div class="cards">
 
-
                 <div class="card evoThunder">
 
-                    <div class="gunIcon">
-                        ⚡
-                    </div>
+                    <div class="gunIcon">⚡</div>
 
-                    <h3>THUNDER-X</h3>
+                    <h3>THUNDER-X EVO</h3>
 
-                    <p>
-                        Level 1
-                    </p>
+                    <p>Damage: <b>38</b></p>
+                    <p>Magazine: <b>35</b></p>
 
                     <div class="level">
                         <div></div>
                     </div>
 
-                    <small>
-                        Level 6 Max
-                    </small>
+                    <small>LEVEL 1 / 6</small>
 
                     <button onclick="equipGun('THUNDER-X EVO')">
                         EQUIP
@@ -361,23 +318,18 @@
 
                 <div class="card evoInferno">
 
-                    <div class="gunIcon">
-                        🔥
-                    </div>
+                    <div class="gunIcon">🔥</div>
 
-                    <h3>INFERNO</h3>
+                    <h3>INFERNO EVO</h3>
 
-                    <p>
-                        Level 1
-                    </p>
+                    <p>Damage: <b>45</b></p>
+                    <p>Magazine: <b>30</b></p>
 
                     <div class="level">
                         <div></div>
                     </div>
 
-                    <small>
-                        Level 6 Max
-                    </small>
+                    <small>LEVEL 1 / 6</small>
 
                     <button onclick="equipGun('INFERNO EVO')">
                         EQUIP
@@ -388,23 +340,18 @@
 
                 <div class="card evoFrost">
 
-                    <div class="gunIcon">
-                        ❄️
-                    </div>
+                    <div class="gunIcon">❄️</div>
 
-                    <h3>FROST</h3>
+                    <h3>FROST EVO</h3>
 
-                    <p>
-                        Level 1
-                    </p>
+                    <p>Damage: <b>34</b></p>
+                    <p>Magazine: <b>42</b></p>
 
                     <div class="level">
                         <div></div>
                     </div>
 
-                    <small>
-                        Level 6 Max
-                    </small>
+                    <small>LEVEL 1 / 6</small>
 
                     <button onclick="equipGun('FROST EVO')">
                         EQUIP
@@ -415,23 +362,18 @@
 
                 <div class="card evoVoid">
 
-                    <div class="gunIcon">
-                        🌌
-                    </div>
+                    <div class="gunIcon">🌌</div>
 
-                    <h3>VOID</h3>
+                    <h3>VOID EVO</h3>
 
-                    <p>
-                        Level 1
-                    </p>
+                    <p>Damage: <b>60</b></p>
+                    <p>Magazine: <b>25</b></p>
 
                     <div class="level">
                         <div></div>
                     </div>
 
-                    <small>
-                        Level 6 Max
-                    </small>
+                    <small>LEVEL 1 / 6</small>
 
                     <button onclick="equipGun('VOID EVO')">
                         EQUIP
@@ -452,24 +394,16 @@
 
             <div class="cards">
 
-
                 <div class="card bundleFire">
 
                     <div class="bundleIcon">
                         🔥🧍
                     </div>
 
-                    <h3>
-                        INFERNO BUNDLE
-                    </h3>
+                    <h3>INFERNO BUNDLE</h3>
 
-                    <p>
-                        Inferno Armor
-                    </p>
-
-                    <p>
-                        Fire Backpack
-                    </p>
+                    <p>Inferno Armor</p>
+                    <p>Fire Backpack</p>
 
                     <button onclick="claimBundle('INFERNO BUNDLE')">
                         CLAIM
@@ -484,17 +418,10 @@
                         ⚡🧍
                     </div>
 
-                    <h3>
-                        THUNDER BUNDLE
-                    </h3>
+                    <h3>THUNDER BUNDLE</h3>
 
-                    <p>
-                        Thunder Armor
-                    </p>
-
-                    <p>
-                        Storm Backpack
-                    </p>
+                    <p>Thunder Armor</p>
+                    <p>Storm Backpack</p>
 
                     <button onclick="claimBundle('THUNDER BUNDLE')">
                         EQUIPPED
@@ -509,17 +436,10 @@
                         ❄️🧍
                     </div>
 
-                    <h3>
-                        FROST BUNDLE
-                    </h3>
+                    <h3>FROST BUNDLE</h3>
 
-                    <p>
-                        Frost Armor
-                    </p>
-
-                    <p>
-                        Ice Backpack
-                    </p>
+                    <p>Frost Armor</p>
+                    <p>Ice Backpack</p>
 
                     <button onclick="claimBundle('FROST BUNDLE')">
                         CLAIM
@@ -534,17 +454,10 @@
                         🌌🧍
                     </div>
 
-                    <h3>
-                        VOID BUNDLE
-                    </h3>
+                    <h3>VOID BUNDLE</h3>
 
-                    <p>
-                        Void Armor
-                    </p>
-
-                    <p>
-                        Dark Backpack
-                    </p>
+                    <p>Void Armor</p>
+                    <p>Dark Backpack</p>
 
                     <button onclick="claimBundle('VOID BUNDLE')">
                         CLAIM
@@ -566,41 +479,22 @@
             <div class="inventory">
 
                 <div class="inventoryItem">
-
-                    <span>
-                        ⚔ EQUIPPED WEAPON
-                    </span>
-
+                    <span>⚔️ EQUIPPED WEAPON</span>
                     <strong id="equippedWeapon">
                         THUNDER-X EVO
                     </strong>
-
                 </div>
 
-
                 <div class="inventoryItem">
-
-                    <span>
-                        👕 EQUIPPED BUNDLE
-                    </span>
-
+                    <span>👕 EQUIPPED BUNDLE</span>
                     <strong id="equippedBundle">
                         THUNDER BUNDLE
                     </strong>
-
                 </div>
 
-
                 <div class="inventoryItem">
-
-                    <span>
-                        💰 GUDU COINS
-                    </span>
-
-                    <strong>
-                        10,000
-                    </strong>
-
+                    <span>💰 GUDU COINS</span>
+                    <strong>10,000</strong>
                 </div>
 
             </div>
@@ -616,14 +510,12 @@
 
 <div id="gameScreen">
 
-    <div id="crosshair">
-        +
-    </div>
+    <div id="crosshair">+</div>
+
+    <div id="gameMessage"></div>
 
 
-    <div id="gameMessage">
-    </div>
-
+    <!-- TOP HUD -->
 
     <div class="gameTop">
 
@@ -635,28 +527,45 @@
         </div>
 
         <div class="gameStat">
+            🤖 BOT
+            <span id="botHealth">
+                100
+            </span>
+        </div>
+
+        <div class="gameStat">
             💀
             <span id="killCount">
                 0
             </span>
         </div>
 
-        <div class="gameStat">
-            👥
-            <span id="aliveCount">
-                2
-            </span>
+    </div>
+
+
+    <!-- BOT BAR -->
+
+    <div class="botBar">
+
+        <div class="botName">
+            🤖 GUDU BOT
+        </div>
+
+        <div class="botHealthOuter">
+            <div id="botHealthFill"></div>
         </div>
 
     </div>
 
 
+    <!-- PLAYER HP -->
+
     <div class="healthBar">
-
         <div id="healthFill"></div>
-
     </div>
 
+
+    <!-- AMMO -->
 
     <div class="ammoBox">
 
@@ -684,9 +593,8 @@
     </div>
 
 
-    <button
-        id="backLobby"
-        onclick="backToLobby()">
+    <button id="backLobby"
+            onclick="backToLobby()">
 
         ← LOBBY
 

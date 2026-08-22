@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,148 +12,651 @@
 
 <body>
 
-    <!-- LOADING -->
+    <!-- ================= LOADING ================= -->
+
     <div id="loadingScreen">
-        <div class="loading-logo">GUDU</div>
-        <div class="loading-text">BATTLE ROYALE</div>
-        <div class="loader"></div>
+
+        <div class="loaderLogo">
+            GUDU
+        </div>
+
+        <div class="loadingText">
+            LOADING BATTLEFIELD...
+        </div>
+
+        <div class="loadingBar">
+            <div></div>
+        </div>
+
     </div>
 
-    <!-- MAIN MENU -->
-    <div id="menuScreen">
 
-        <div class="menu-overlay"></div>
+    <!-- ================= MAIN LOBBY ================= -->
 
-        <div class="menu-content">
+    <section id="lobby">
 
-            <div class="game-logo">
-                <span>GUDU</span>
-                <small>BATTLE</small>
+        <div class="backgroundGlow"></div>
+
+        <header>
+
+            <div class="logo">
+                GUDU<span>BATTLE</span>
             </div>
 
-            <p class="subtitle">
-                SURVIVE • FIGHT • DOMINATE
-            </p>
+            <div class="playerInfo">
 
-            <button id="playButton">
-                ▶ PLAY
+                <div class="avatar">
+                    G
+                </div>
+
+                <div>
+                    <b>GUDU PLAYER</b>
+                    <small>LV. 12</small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PLAYER -->
+
+        <div class="hero">
+
+            <div class="heroText">
+
+                <div class="smallTitle">
+                    WELCOME TO
+                </div>
+
+                <h1>
+                    GUDU<br>
+                    <span>BATTLE</span>
+                </h1>
+
+                <p>
+                    Enter the battlefield.
+                    Fight bots. Upgrade weapons.
+                    Become the last survivor.
+                </p>
+
+                <button id="playButton">
+                    ⚔ PLAY 1V1
+                </button>
+
+            </div>
+
+
+            <div class="characterPreview">
+
+                <div class="characterGlow"></div>
+
+                <div class="character">
+                    🧍
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <div class="menu">
+
+            <button class="menuButton active"
+                onclick="showPanel('home')">
+                🏠
+                <span>HOME</span>
             </button>
 
-            <div class="menu-info">
-                <span>🎮 PC</span>
-                <span>⚡ ONLINE</span>
-                <span>🔥 BATTLE ROYALE</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- GAME -->
-    <div id="gameScreen">
-
-        <!-- TOP HUD -->
-        <div class="top-hud">
-
-            <div class="hud-box">
-                <span class="hud-title">PLAYER</span>
-                <span id="playerName">GUDU</span>
-            </div>
-
-            <div class="hud-box">
-                <span class="hud-title">KILLS</span>
-                <span id="killCount">0</span>
-            </div>
-
-            <div class="hud-box">
-                <span class="hud-title">ALIVE</span>
-                <span id="aliveCount">10</span>
-            </div>
-
-        </div>
-
-        <!-- CROSSHAIR -->
-        <div id="crosshair">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-
-        <!-- HEALTH -->
-        <div class="health-container">
-
-            <div class="health-label">
-                ❤️ HEALTH
-            </div>
-
-            <div class="health-bar">
-                <div id="healthFill"></div>
-            </div>
-
-            <div id="healthText">
-                100 / 100
-            </div>
-
-        </div>
-
-        <!-- WEAPON -->
-        <div class="weapon-hud">
-
-            <div class="weapon-icon">
+            <button class="menuButton"
+                onclick="showPanel('guns')">
                 🔫
-            </div>
+                <span>GUNS</span>
+            </button>
 
-            <div>
-                <div class="weapon-name">
-                    GUDU RIFLE
-                </div>
+            <button class="menuButton"
+                onclick="showPanel('evo')">
+                ⚡
+                <span>EVO</span>
+            </button>
 
-                <div class="ammo">
-                    <span id="ammoCount">30</span>
-                    <span class="ammo-max">/ 90</span>
-                </div>
-            </div>
+            <button class="menuButton"
+                onclick="showPanel('bundles')">
+                👕
+                <span>BUNDLES</span>
+            </button>
 
-        </div>
-
-        <!-- CONTROLS -->
-        <div class="controls">
-
-            <div>
-                <b>W A S D</b>
-                <span>MOVE</span>
-            </div>
-
-            <div>
-                <b>SHIFT</b>
-                <span>SPRINT</span>
-            </div>
-
-            <div>
-                <b>SPACE</b>
-                <span>JUMP</span>
-            </div>
-
-            <div>
-                <b>CLICK</b>
-                <span>SHOOT</span>
-            </div>
+            <button class="menuButton"
+                onclick="showPanel('inventory')">
+                🎒
+                <span>INVENTORY</span>
+            </button>
 
         </div>
 
-        <!-- GAME MESSAGE -->
+
+        <!-- ================= PANELS ================= -->
+
+        <div id="panelContainer">
+
+
+            <!-- GUNS -->
+
+            <div
+                class="panel"
+                id="gunsPanel">
+
+                <h2>🔫 WEAPON ARMORY</h2>
+
+                <div class="items">
+
+                    <div class="item">
+                        <div class="weaponIcon">🔫</div>
+                        <h3>GUDU AR</h3>
+                        <p>Damage: 25</p>
+                        <p>Fire Rate: Fast</p>
+                        <button onclick="equipGun('GUDU AR')">
+                            EQUIP
+                        </button>
+                    </div>
+
+                    <div class="item">
+                        <div class="weaponIcon">🔫</div>
+                        <h3>GUDU SMG</h3>
+                        <p>Damage: 17</p>
+                        <p>Fire Rate: Extreme</p>
+                        <button onclick="equipGun('GUDU SMG')">
+                            EQUIP
+                        </button>
+                    </div>
+
+                    <div class="item">
+                        <div class="weaponIcon">💥</div>
+                        <h3>GUDU SHOTGUN</h3>
+                        <p>Damage: 12 × 7</p>
+                        <p>Close Range</p>
+                        <button onclick="equipGun('GUDU SHOTGUN')">
+                            EQUIP
+                        </button>
+                    </div>
+
+                    <div class="item">
+                        <div class="weaponIcon">🎯</div>
+                        <h3>GUDU SNIPER</h3>
+                        <p>Damage: 90</p>
+                        <p>Long Range</p>
+                        <button onclick="equipGun('GUDU SNIPER')">
+                            EQUIP
+                        </button>
+                    </div>
+
+                    <div class="item">
+                        <div class="weaponIcon">🔫</div>
+                        <h3>GUDU PISTOL</h3>
+                        <p>Damage: 30</p>
+                        <p>Balanced</p>
+                        <button onclick="equipGun('GUDU PISTOL')">
+                            EQUIP
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVO -->
+
+            <div
+                class="panel"
+                id="evoPanel">
+
+                <h2>⚡ EVO WEAPONS</h2>
+
+                <div class="items">
+
+                    <div class="item evo thunder">
+
+                        <div class="weaponIcon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            THUNDER-X
+                        </h3>
+
+                        <p>
+                            Level 1
+                        </p>
+
+                        <div class="levelBar">
+                            <div></div>
+                        </div>
+
+                        <button onclick="equipGun('THUNDER-X EVO')">
+                            EQUIP
+                        </button>
+
+                    </div>
+
+
+                    <div class="item evo inferno">
+
+                        <div class="weaponIcon">
+                            🔥
+                        </div>
+
+                        <h3>
+                            INFERNO
+                        </h3>
+
+                        <p>
+                            Level 1
+                        </p>
+
+                        <div class="levelBar">
+                            <div></div>
+                        </div>
+
+                        <button onclick="equipGun('INFERNO EVO')">
+                            EQUIP
+                        </button>
+
+                    </div>
+
+
+                    <div class="item evo frost">
+
+                        <div class="weaponIcon">
+                            ❄️
+                        </div>
+
+                        <h3>
+                            FROST
+                        </h3>
+
+                        <p>
+                            Level 1
+                        </p>
+
+                        <div class="levelBar">
+                            <div></div>
+                        </div>
+
+                        <button onclick="equipGun('FROST EVO')">
+                            EQUIP
+                        </button>
+
+                    </div>
+
+
+                    <div class="item evo void">
+
+                        <div class="weaponIcon">
+                            🌌
+                        </div>
+
+                        <h3>
+                            VOID
+                        </h3>
+
+                        <p>
+                            Level 1
+                        </p>
+
+                        <div class="levelBar">
+                            <div></div>
+                        </div>
+
+                        <button onclick="equipGun('VOID EVO')">
+                            EQUIP
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUNDLES -->
+
+            <div
+                class="panel"
+                id="bundlesPanel">
+
+                <h2>👕 GUDU BUNDLES</h2>
+
+                <div class="items">
+
+                    <div class="bundle infernoBundle">
+
+                        <div class="bundleCharacter">
+                            🔥🧍
+                        </div>
+
+                        <h3>
+                            INFERNO BUNDLE
+                        </h3>
+
+                        <p>
+                            Inferno Armor
+                        </p>
+
+                        <p>
+                            Fire Backpack
+                        </p>
+
+                        <button onclick="claimBundle('INFERNO BUNDLE')">
+                            CLAIM
+                        </button>
+
+                    </div>
+
+
+                    <div class="bundle thunderBundle">
+
+                        <div class="bundleCharacter">
+                            ⚡🧍
+                        </div>
+
+                        <h3>
+                            THUNDER BUNDLE
+                        </h3>
+
+                        <p>
+                            Thunder Armor
+                        </p>
+
+                        <p>
+                            Storm Backpack
+                        </p>
+
+                        <button onclick="claimBundle('THUNDER BUNDLE')">
+                            EQUIPPED
+                        </button>
+
+                    </div>
+
+
+                    <div class="bundle frostBundle">
+
+                        <div class="bundleCharacter">
+                            ❄️🧍
+                        </div>
+
+                        <h3>
+                            FROST BUNDLE
+                        </h3>
+
+                        <p>
+                            Frost Armor
+                        </p>
+
+                        <p>
+                            Ice Backpack
+                        </p>
+
+                        <button onclick="claimBundle('FROST BUNDLE')">
+                            CLAIM
+                        </button>
+
+                    </div>
+
+
+                    <div class="bundle voidBundle">
+
+                        <div class="bundleCharacter">
+                            🌌🧍
+                        </div>
+
+                        <h3>
+                            VOID BUNDLE
+                        </h3>
+
+                        <p>
+                            Void Armor
+                        </p>
+
+                        <p>
+                            Dark Backpack
+                        </p>
+
+                        <button onclick="claimBundle('VOID BUNDLE')">
+                            CLAIM
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INVENTORY -->
+
+            <div
+                class="panel"
+                id="inventoryPanel">
+
+                <h2>🎒 INVENTORY</h2>
+
+                <div class="inventoryBox">
+
+                    <div>
+                        <b>⚔ EQUIPPED WEAPON</b>
+
+                        <strong id="equippedWeapon">
+                            THUNDER-X EVO
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <b>👕 EQUIPPED BUNDLE</b>
+
+                        <strong>
+                            THUNDER BUNDLE
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <b>💰 GUDU COINS</b>
+
+                        <strong>
+                            10,000
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= GAME UI ================= -->
+
+    <section id="gameScreen">
+
+        <div id="crosshair">
+            +
+        </div>
+
+
         <div id="gameMessage"></div>
 
-    </div>
 
-    <!-- THREE.JS -->
-    <script type="module"
-            src="https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js">
+        <div class="gameTop">
+
+            <div class="gameStat">
+                ❤️
+                <span id="healthText">
+                    100 / 100
+                </span>
+            </div>
+
+            <div class="gameStat">
+                💀
+                <span id="killCount">
+                    0
+                </span>
+            </div>
+
+            <div class="gameStat">
+                👥
+                <span id="aliveCount">
+                    2
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="healthBar">
+
+            <div id="healthFill"></div>
+
+        </div>
+
+
+        <div class="ammoBox">
+
+            🔫
+
+            <span id="ammoCount">
+                35
+            </span>
+
+        </div>
+
+
+        <div class="gameControls">
+
+            WASD MOVE
+            •
+            SHIFT SPRINT
+            •
+            SPACE JUMP
+            •
+            CLICK SHOOT
+            •
+            R RELOAD
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+        function showPanel(panel) {
+
+            document
+                .querySelectorAll(".panel")
+                .forEach(p => {
+
+                    p.style.display =
+                        "none";
+
+                });
+
+
+            if (panel === "guns") {
+
+                document
+                    .getElementById(
+                        "gunsPanel"
+                    )
+                    .style.display =
+                    "block";
+            }
+
+
+            if (panel === "evo") {
+
+                document
+                    .getElementById(
+                        "evoPanel"
+                    )
+                    .style.display =
+                    "block";
+            }
+
+
+            if (panel === "bundles") {
+
+                document
+                    .getElementById(
+                        "bundlesPanel"
+                    )
+                    .style.display =
+                    "block";
+            }
+
+
+            if (panel === "inventory") {
+
+                document
+                    .getElementById(
+                        "inventoryPanel"
+                    )
+                    .style.display =
+                    "block";
+            }
+
+        }
+
+
+        function equipGun(name) {
+
+            window.selectedGun =
+                name;
+
+            const element =
+                document.getElementById(
+                    "equippedWeapon"
+                );
+
+            if (element) {
+
+                element.textContent =
+                    name;
+            }
+
+
+            alert(
+                "🔫 " +
+                name +
+                " equipped!"
+            );
+        }
+
+
+        function claimBundle(name) {
+
+            alert(
+                "👕 " +
+                name +
+                " equipped!"
+            );
+
+        }
+
     </script>
 
-    <!-- GAME SCRIPT -->
-    <script type="module" src="game.js"></script>
+
+    <script
+        type="module"
+        src="game.js">
+    </script>
 
 </body>
+
 </html>

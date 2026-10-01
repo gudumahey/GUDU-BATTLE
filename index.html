@@ -24,7 +24,19 @@ body{
     font-family:Poppins,sans-serif;
     overflow-x:hidden;
 }
+.space::before{
+    content:"";
+    position:absolute;
+    inset:-20%;
 
+    background:
+        radial-gradient(circle at 20% 25%,rgba(126,65,255,.20),transparent 18%),
+        radial-gradient(circle at 80% 20%,rgba(0,190,255,.13),transparent 20%),
+        radial-gradient(circle at 70% 80%,rgba(255,0,150,.12),transparent 18%),
+        radial-gradient(circle at 25% 80%,rgba(80,40,255,.13),transparent 20%);
+
+    animation:nebula 14s ease-in-out infinite alternate;
+}
 /* =========================
    ANIMATED SPACE BACKGROUND
 ========================= */
@@ -44,4 +56,141 @@ body{
     position:absolute;
     inset:0;
 }
+/* LOGO */
+
+.server-logo{
+
+    position:relative;
+
+    z-index:10;
+
+    width:135px;
+    height:135px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #5d3ca8,
+            #17132d 58%,
+            #070711 100%
+        );
+
+    border:2px solid rgba(192,160,255,.7);
+
+    box-shadow:
+
+        0 0 15px rgba(135,75,255,.9),
+
+        0 0 40px rgba(108,55,255,.7),
+
+        0 0 90px rgba(87,40,255,.25),
+
+        inset 0 0 30px rgba(255,255,255,.08);
+
+    animation:logoPulse 3s ease-in-out infinite alternate;
+}
+
+/* V */
+
+.server-logo .big-v{
+
+    font-family:Orbitron,sans-serif;
+
+    font-size:70px;
+
+    line-height:.8;
+
+    font-weight:900;
+
+    color:white;
+
+    text-shadow:
+
+        0 0 8px white,
+
+        0 0 20px #a269ff,
+
+        0 0 40px #743aff;
+}
+@keyframes logoPulse{
+
+    from{
+        transform:scale(.96);
+
+        box-shadow:
+            0 0 15px rgba(135,75,255,.7),
+            0 0 35px rgba(108,55,255,.45),
+            inset 0 0 25px rgba(255,255,255,.06);
+    }
+
+    to{
+        transform:scale(1.04);
+
+        box-shadow:
+            0 0 25px rgba(160,100,255,1),
+            0 0 60px rgba(108,55,255,.7),
+            0 0 100px rgba(87,40,255,.25),
+            inset 0 0 35px rgba(255,255,255,.12);
+    }
+}<div class="space">
+
+    <div class="stars">
+
+        <i class="star" style="left:5%;top:12%;animation-delay:.4s"></i>
+        <i class="star" style="left:12%;top:28%;animation-delay:1s"></i>
+        <i class="star" style="left:20%;top:8%;animation-delay:1.7s"></i>
+        <i class="star" style="left:27%;top:43%;animation-delay:.8s"></i>
+        <i class="star" style="left:34%;top:18%;animation-delay:2s"></i>
+        <i class="star" style="left:43%;top:7%;animation-delay:.2s"></i>
+        <i class="star" style="left:52%;top:28%;animation-delay:1.4s"></i>
+        <i class="star" style="left:61%;top:12%;animation-delay:.7s"></i>
+        <i class="star" style="left:70%;top:38%;animation-delay:2.1s"></i>
+        <i class="star" style="left:78%;top:17%;animation-delay:1.2s"></i>
+        <i class="star" style="left:88%;top:30%;animation-delay:.5s"></i>
+        <i class="star" style="left:95%;top:8%;animation-delay:1.8s"></i>
+
+        <i class="star" style="left:8%;top:70%;animation-delay:1.5s"></i>
+        <i class="star" style="left:19%;top:85%;animation-delay:.3s"></i>
+        <i class="star" style="left:32%;top:72%;animation-delay:1.9s"></i>
+        <i class="star" style="left:47%;top:90%;animation-delay:.6s"></i>
+        <i class="star" style="left:58%;top:76%;animation-delay:1.1s"></i>
+        <i class="star" style="left:73%;top:88%;animation-delay:2s"></i>
+        <i class="star" style="left:84%;top:68%;animation-delay:.9s"></i>
+        <i class="star" style="left:94%;top:82%;animation-delay:1.6s"></i>
+
+    </div>
+
+    <div class="shooting"></div>
+    <div class="shooting"></div>
+
+</div>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        𓆩⚡ <span>GUDU</span> MC ⚔𓆪
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+        <a href="#server">Server</a>
+        <a href="#modes">Modes</a>
+        <a href="#team">Team</a>
+        <a href="#rules">Rules</a>
+
+
 

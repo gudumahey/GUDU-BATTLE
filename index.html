@@ -1,147 +1,320 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🛒 RAISTAR MARKET - Caja POS - REAL</title>
+<title>RAISTAR MARKET - Caja</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',Arial,sans-serif}
-body{background:#eef2f7;color:#111;min-height:100vh}
-.top{background:#111;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
-.top b{font-size:20px} .top b span{color:#22c55e}
-.top small{display:block;font-size:11px;color:#aaa}
-.top button{border:none;padding:9px 15px;border-radius:30px;font-weight:800;cursor:pointer;font-size:12px}
-.wrap{display:grid;grid-template-columns:1.65fr 1fr;gap:14px;max-width:1350px;margin:0 auto;padding:14px}
-.card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.06);margin-bottom:12px}
-.card h3{margin-bottom:10px}
-.scan-row{display:flex;gap:8px}
-.scan-row input{flex:1;padding:14px;border:2px solid #e5e7eb;border-radius:14px;outline:none;font-size:16px;font-weight:800}
-.scan-row input:focus{border-color:#22c55e}
-.btn{border:none;padding:12px 20px;border-radius:30px;font-weight:900;cursor:pointer;transition:.15s}
-.btn:hover{transform:scale(1.03)} .btn:active{transform:scale(.97)}
-.btn.green{background:#22c55e;color:#fff} .btn.blue{background:#2563eb;color:#fff} .btn.orange{background:#f59e0b;color:#fff} .btn.red{background:#ef4444;color:#fff} .btn.black{background:#111;color:#fff} .btn.purple{background:#7c3aed;color:#fff} .btn.small{padding:8px 14px;font-size:12px}
-.cat-row{display:flex;gap:8px;overflow-x:auto;padding:6px 0;scrollbar-width:none}
-.cat-row button{white-space:nowrap;border:1px solid #e5e7eb;background:#fff;padding:9px 16px;border-radius:30px;font-weight:700;cursor:pointer;font-size:13px}
-.cat-row button.active{background:#111;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
-.prod{background:#fff;border:2px solid #f1f5f9;border-radius:16px;padding:12px;text-align:center;cursor:pointer;transition:.2s;position:relative}
-.prod:hover{transform:translateY(-4px);border-color:#22c55e;box-shadow:0 10px 22px rgba(34,197,94,.18)}
-.prod .num{position:absolute;top:8px;left:8px;background:#111;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}
-.prod .em{font-size:38px} .prod b{font-size:13px;display:block;margin:6px 0 2px;line-height:1.3;min-height:34px} .prod .code{font-size:10px;color:#888;background:#f8fafc;padding:2px 7px;border-radius:20px} .prod .price{font-size:17px;font-weight:900;color:#16a34a;margin-top:5px} .prod .stock{font-size:10px;color:#888}
-.bill-item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f1f5f9;gap:8px}
-.bill-item b{font-size:13px} .bill-item span{font-size:11px;color:#666}
-.num-badge{background:#111;color:#fff;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
-.qty{display:flex;gap:6px;align-items:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#eef2f7}
+.top{background:#111;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.top b{font-size:22px} .top b span{color:#22c55e}
+.wrap{display:flex;gap:14px;max-width:1300px;margin:0 auto;padding:14px;align-items:flex-start}
+.left{flex:1.6;background:#fff;border-radius:18px;padding:16px}
+.right{flex:1;background:#fff;border-radius:18px;padding:16px;position:sticky;top:14px}
+h3{margin-bottom:10px}
+.search{width:100%;padding:13px;border:2px solid #ddd;border-radius:12px;font-size:15px;outline:none;margin-bottom:10px}
+.search:focus{border-color:#22c55e}
+.cat{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.cat button{white-space:nowrap;border:1px solid #ddd;background:#fff;padding:8px 15px;border-radius:20px;font-weight:700;cursor:pointer}
+.cat button.on{background:#111;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.prod{border:2px solid #eee;border-radius:14px;padding:12px;text-align:center;cursor:pointer;background:#fff}
+.prod:hover{border-color:#22c55e;background:#f0fdf4;transform:translateY(-2px)}
+.prod .num{background:#111;color:#fff;display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800}
+.prod .em{font-size:36px;display:block;margin:6px 0}
+.prod b{font-size:13px;display:block;line-height:1.3;min-height:34px}
+.prod .code{font-size:11px;color:#888}
+.prod .price{font-size:18px;font-weight:900;color:#16a34a;margin-top:4px}
+.btn{border:none;padding:11px 18px;border-radius:30px;font-weight:800;cursor:pointer}
+.btn.green{background:#22c55e;color:#fff} .btn.blue{background:#2563eb;color:#fff} .btn.orange{background:#f59e0b;color:#fff} .btn.red{background:#ef4444;color:#fff} .btn.black{background:#111;color:#fff} .btn.small{padding:8px 13px;font-size:12px}
+.bill-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee;gap:8px}
+.bill-item .n{background:#111;color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
 .qty button{width:28px;height:28px;border-radius:50%;border:1px solid #ddd;background:#fff;font-weight:900;cursor:pointer;font-size:16px}
-.qty button:hover{background:#111;color:#fff}
-.total-box{background:#111;color:#fff;border-radius:16px;padding:16px;margin-top:10px}
-.total-box .row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
-.total-box .row.big{font-size:22px;font-weight:900;border-top:1px dashed #444;padding-top:10px;margin-top:6px}
-.total-box .row.big span{color:#22c55e}
-.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.pay-grid button{padding:16px;border-radius:16px;border:none;font-weight:900;cursor:pointer;font-size:15px;transition:.15s}
-.pay-grid button:hover{transform:scale(1.03)} .pay-grid button:active{transform:scale(.97)}
-.toggle{display:flex;justify-content:space-between;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:12px;margin-top:10px}
-.switch{width:54px;height:30px;background:#ddd;border-radius:30px;position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
-.switch::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.switch.on{background:#22c55e} .switch.on::after{left:27px}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 20px;border-radius:30px;font-size:13px;font-weight:800;z-index:999;display:none;max-width:92%;text-align:center}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.total{background:#111;color:#fff;border-radius:14px;padding:14px;margin-top:10px}
+.total .row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.total .big{font-size:22px;font-weight:900;border-top:1px dashed #555;margin-top:6px;padding-top:8px}
+.total .big span{color:#22c55e}
+.pay{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pay button{padding:15px;border-radius:14px;border:none;font-weight:900;font-size:15px;cursor:pointer;color:#fff}
+.domi{display:flex;justify-content:space-between;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin-top:10px}
+.sw{width:52px;height:28px;background:#ddd;border-radius:30px;position:relative;cursor:pointer}
+.sw:after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%}
+.sw.on{background:#22c55e} .sw.on:after{left:27px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:99;padding:16px}
 .modal.show{display:flex}
-.modal-box{background:#fff;border-radius:24px;padding:22px;width:100%;max-width:430px;text-align:center;animation:pop .3s ease;max-height:92vh;overflow-y:auto}
-@keyframes pop{0%{transform:scale(.9)}100%{transform:scale(1)}}
-.card-machine{background:linear-gradient(135deg,#111,#333);color:#fff;border-radius:20px;padding:18px;margin:12px 0}
-.card-machine .screen{background:#0f172a;border:2px solid #22c55e;border-radius:12px;padding:14px;min-height:78px;font-family:monospace;text-align:left}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.keypad button{background:#fff;color:#111;border:none;padding:14px;border-radius:14px;font-size:18px;font-weight:900;cursor:pointer}
-.keypad button:hover{background:#22c55e;color:#fff}
-.keypad button.del{background:#ef4444;color:#fff} .keypad button.ok{background:#22c55e;color:#fff}
-.cash-input{font-size:28px !important;font-weight:900 !important;text-align:center !important;padding:16px !important}
-.ticket{background:#fff;border:2px dashed #111;padding:18px;border-radius:12px;text-align:left;font-family:monospace;font-size:13px;line-height:1.6}
-@media(max-width:900px){.wrap{grid-template-columns:1fr}}
-@media print{body *{visibility:hidden} #printTicket,#printTicket *{visibility:visible} #printTicket{position:absolute;top:0;left:0;width:100%}}
+.box{background:#fff;border-radius:20px;padding:22px;width:100%;max-width:400px;text-align:center}
+.machine{background:#111;color:#fff;border-radius:16px;padding:16px;margin:12px 0;text-align:left}
+.screen{background:#0f172a;border:2px solid #22c55e;border-radius:10px;padding:12px;min-height:70px}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.keys button{background:#fff;border:none;padding:13px;border-radius:12px;font-size:18px;font-weight:900;cursor:pointer}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 20px;border-radius:30px;font-weight:800;z-index:999;display:none}
+@media(max-width:850px){.wrap{flex-direction:column} .grid{grid-template-columns:repeat(2,1fr)} .right{position:static;width:100%}}
 </style>
 </head>
 <body>
 <div id="toast"></div>
-<div class="top"><div><b>🛒 RAISTAR <span>MARKET</span></b><small>📍 L'Hospitalet • Caja 1 • Cajero: RAISTAR • <span id="clock">00:00</span></small></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="background:#22c55e;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:900">🟢 CAJA ABIERTA</span><button style="background:#fff;color:#111" onclick="newSale()">🆕 Nueva Venta</button><button style="background:#22c55e;color:#fff" onclick="loadDemo()">🔄 Demo Bill Load Karo</button><button style="background:#ef4444;color:#fff" onclick="clearAll()">🗑️ Limpiar</button></div></div>
+<div class="top"><div><b>RAISTAR <span>MARKET</span></b><br><span style="font-size:11px;color:#aaa">Caja 1 - Cajero: RAISTAR</span></div><div style="display:flex;gap:8px"><button class="btn green" onclick="loadDemo()">Demo Bill</button><button class="btn red" onclick="clearBill()">Limpiar</button></div></div>
 
 <div class="wrap">
-<div>
-<div class="card">
-<h3>📷 Escanear / Buscar - Código Ya Nombre</h3>
-<div class="scan-row"><input id="scanInput" placeholder="🔍 Código... 8410, 8414, 8420 ya nombre... Coca, Pan, Leche" onkeypress="if(event.key==='Enter') doScan()"><button class="btn green" onclick="doScan()">📷 ESCANEAR</button></div>
-<p style="font-size:12px;color:#666;margin-top:8px">💡 Try karo: <b>8410</b> + Enter = Coca! • <b>Pan</b> likho = Pan Barra! • Neeche click bhi kar sakte ho!</p>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn small purple" onclick="openAddProduct()">➕ Apna Producto Add Karo</button><button class="btn small blue" onclick="demoScan()">⚡ Demo Scan: 8410</button><button class="btn small" style="background:#111;color:#fff" onclick="loadDemo()">📋 Demo Bill Wapas Lao</button></div>
-</div>
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3>🛍️ Productos - Number Ke Saath - Click Karo!</h3><span style="font-size:12px;color:#888" id="prodCount"></span></div>
-<div class="cat-row" id="catRow"></div>
+<!-- LEFT : SAB PRODUCTS EK SIDE PE -->
+<div class="left">
+<h3>Scan / Buscar</h3>
+<input class="search" id="scanInput" placeholder="Codigo likho... 8410 ya naam... Coca" onkeydown="if(event.key==='Enter') doScan()">
+<button class="btn green" onclick="doScan()" style="width:100%;margin-bottom:12px">ESCANEAR / BUSCAR</button>
+<button class="btn small" style="background:#7c3aed;color:#fff" onclick="openAdd()">+ Apna Producto Add Karo</button>
+<h3 style="margin-top:14px">Productos - Click Karte Hi Bill Me Add Hoga</h3>
+<div class="cat" id="catRow"></div>
 <div class="grid" id="prodGrid"></div>
-</div>
-<div class="card"><h3>⚡ Paise Jyada Wale + Descuento - Sare Buttons Kaam Karte Hai!</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn small black" onclick="quickCash(5)">💵 5€</button><button class="btn small black" onclick="quickCash(10)">💵 10€</button><button class="btn small black" onclick="quickCash(20)">💵 20€</button><button class="btn small black" onclick="quickCash(50)">💵 50€</button><button class="btn small black" onclick="quickCash(100)">💵 100€</button><button class="btn small orange" onclick="applyDiscount(5)">-5% Descuento</button><button class="btn small orange" onclick="applyDiscount(10)">-10% Descuento</button><button class="btn small orange" onclick="applyDiscount(20)">-20% Descuento</button><button class="btn small red" onclick="removeDiscount()">❌ Descuento Hatao</button></div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn small blue" onclick="openCard()">💳 CARD - PIN 2010</button><button class="btn small green" onclick="openCash()">💵 CASH</button><button class="btn small" style="background:#111;color:#fff" onclick="printBill()">🖨️ Print Ticket</button><button class="btn small purple" onclick="saveBill()">💾 Guardar Bill</button></div></div>
-</div>
-
-<div>
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3>🧾 FACTURA / BILL - <span id="billNo">#1001</span></h3><span style="background:#f0fdf4;color:#16a34a;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:800" id="itemCount">0 items</span></div>
-<p style="font-size:11px;color:#888">✅ Bill pehle se bhara hua hai - Demo Venta - Tu chahe to badal sakta hai!</p>
-<input id="custName" placeholder="👤 Cliente: Maria Garcia" value="Maria Garcia" style="margin-top:8px">
-<div id="billList" style="min-height:120px;max-height:340px;overflow-y:auto"></div>
-<div class="toggle"><div><b>🛵 Domicilio / Delivery?</b><br><span style="font-size:11px;color:#666">ON = +2.50€ • OFF = 0€</span><input id="domiAddr" placeholder="🏠 Address... Calle..." style="margin-top:8px;padding:8px" onclick="event.stopPropagation()"></div><div class="switch" id="domiSwitch" onclick="toggleDomi()"></div></div>
-<div style="display:flex;gap:8px;margin-top:10px"><input id="discountInput" type="number" placeholder="Descuento % - jaise 10" style="margin:0"><button class="btn small orange" onclick="applyCustomDiscount()">Aplicar Descuento</button></div>
-<div class="total-box"><div class="row"><span>Subtotal:</span><b id="subTotal">0.00€</b></div><div class="row" id="discRow" style="display:none"><span>Descuento (<span id="discPct">0</span>%):</span><b style="color:#f59e0b" id="discAmt">-0.00€</b></div><div class="row" id="domiRow" style="display:none"><span>🛵 Domicilio:</span><b>+2.50€</b></div><div class="row"><span>IVA (10% incluido):</span><b id="ivaAmt">0.00€</b></div><div class="row"><span>Ahorro / Ahorras:</span><b id="saveAmt" style="color:#22c55e">0.00€</b></div><div class="row big"><span>TOTAL A PAGAR:</span><span id="grandTotal">0.00€</span></div></div>
-<div class="pay-grid"><button style="background:#22c55e;color:#fff" onclick="openCash()">💵 CASH<br><span style="font-size:11px;opacity:.8">Efectivo - Cambio Auto</span></button><button style="background:#2563eb;color:#fff" onclick="openCard()">💳 CARD / TARJETA<br><span style="font-size:11px;opacity:.8">PIN: 2010</span></button></div>
-<div style="display:flex;gap:8px;margin-top:10px"><button class="btn black" style="flex:1" onclick="printBill()">🖨️ Print Ticket</button><button class="btn red" style="flex:1" onclick="clearAll()">🗑️ Cancelar Venta</button></div>
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:10px;border-radius:12px;margin-top:10px;font-size:12px"><b>📊 Aaj Ki Venta:</b> <span id="todaySales">2</span> ventas • <span id="todayTotal">24.50€</span> total • <b>Última:</b> <span id="lastSale">-</span></div>
-</div>
-<div class="card"><h3>🧾 Últimas Ventas - Pehle Se 2 Ventas Hai!</h3><div id="historyList"></div></div>
-<div class="card"><h3>💡 Kaise Use Kare? - Cajero Guide</h3><p style="font-size:12px;line-height:1.7"><b>1.</b> Product pe click karo ya code scan karo - Bill me add ho jayega<br><b>2.</b> <b>+ / -</b> se qty badlo, <b>✕</b> se hatao<br><b>3.</b> <b>Domicilio</b> ON karo to +2.50€<br><b>4.</b> <b>CASH</b> = Paise do, Cambio auto • <b>CARD</b> = PIN <b>2010</b> dalo<br><b>5.</b> <b>Print</b> dabao to ticket print hoga</p></div>
+<h3 style="margin-top:14px">Quick Buttons - Sab Kaam Karenge</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn small black" onclick="quickCash(5)">5 Euro</button>
+<button class="btn small black" onclick="quickCash(10)">10 Euro</button>
+<button class="btn small black" onclick="quickCash(20)">20 Euro</button>
+<button class="btn small black" onclick="quickCash(50)">50 Euro</button>
+<button class="btn small orange" onclick="setDisc(5)">-5% Descuento</button>
+<button class="btn small orange" onclick="setDisc(10)">-10% Descuento</button>
+<button class="btn small red" onclick="setDisc(0)">Descuento Hatao</button>
 </div>
 </div>
 
-<!-- CASH -->
-<div class="modal" id="cashModal"><div class="modal-box"><h2>💵 CASH - Efectivo</h2><p>Total: <b id="cashTotal" style="font-size:24px">0.00€</b></p><p style="margin-top:12px;font-weight:800">Cliente ne kitne diye?</p><input id="cashGiven" class="cash-input" type="number" placeholder="0.00" oninput="calcChange()"><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0"><button class="btn small black" onclick="setCash(5)">5€</button><button class="btn small black" onclick="setCash(10)">10€</button><button class="btn small black" onclick="setCash(20)">20€</button><button class="btn small black" onclick="setCash(50)">50€</button><button class="btn small black" onclick="setCash(100)">100€</button><button class="btn small" style="background:#f3f4f6;color:#111" onclick="setCashExact()">Exacto</button></div><div style="background:#f0fdf4;padding:14px;border-radius:14px"><b>💰 CAMBIO / VUELTO:</b><br><b id="cashChange" style="font-size:32px;color:#16a34a">0.00€</b><br><span id="cashMsg" style="font-size:12px;color:#666"></span></div><div style="display:flex;gap:8px;margin-top:14px"><button class="btn green" style="flex:1;padding:16px" onclick="confirmCash()">✅ COBRAR + TICKET</button><button class="btn black" onclick="closeModal('cashModal')">❌ Cancelar</button></div></div></div>
+<!-- RIGHT : BILL -->
+<div class="right">
+<h3>FACTURA / BILL - #<span id="billNo">1001</span></h3>
+<p style="font-size:12px;color:#888">Bill pehle se bhara hua hai - Click karke aur add karo!</p>
+<input class="search" id="custName" placeholder="Cliente ka naam" value="Maria Garcia">
+<div id="billList" style="max-height:300px;overflow-y:auto"></div>
+<div class="domi"><div><b>Domicilio?</b><br><span style="font-size:11px">ON = +2.50 Euro</span><br><input id="domiAddr" placeholder="Address..." style="margin-top:6px;padding:8px;border:1px solid #ddd;border-radius:8px;width:100%"></div><div class="sw" id="domiSw" onclick="toggleDomi()"></div></div>
+<div class="total"><div class="row"><span>Subtotal:</span><b id="subT">0.00</b></div><div class="row" id="discRow" style="display:none"><span>Descuento:</span><b id="discAmt">-0.00</b></div><div class="row" id="domiRow" style="display:none"><span>Domicilio:</span><b>+2.50</b></div><div class="row big"><span>TOTAL:</span><span id="grandT">0.00</span></div></div>
+<div class="pay"><button style="background:#22c55e" onclick="openCash()">CASH<br><span style="font-size:11px">Efectivo</span></button><button style="background:#2563eb" onclick="openCard()">CARD<br><span style="font-size:11px">PIN: 2010</span></button></div>
+<div style="display:flex;gap:8px;margin-top:10px"><button class="btn black" style="flex:1" onclick="printBill()">Print Ticket</button><button class="btn red" style="flex:1" onclick="clearBill()">Cancelar</button></div>
+<div style="background:#f0fdf4;padding:10px;border-radius:10px;margin-top:10px;font-size:12px"><b>Aaj:</b> <span id="todayInfo">2 ventas - 24.50 Euro</span></div>
+</div>
+</div>
 
-<!-- CARD -->
-<div class="modal" id="cardModal"><div class="modal-box"><h2>💳 CARD - Tarjeta</h2><p style="color:#666">Datáfono - Real jaisa machine!</p><div class="card-machine"><div style="display:flex;justify-content:space-between;font-size:11px;opacity:.7"><span>RAISTAR MARKET</span><span>VISA • MASTERCARD</span></div><div class="screen" id="cardScreen">💳 Inserta tu tarjeta...<br><br>Total: <b id="cardTotal">0.00€</b></div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn small green" onclick="insertCard()">💳 Tarjeta Daldo</button><button class="btn small blue" onclick="tapCard()">📱 Tap</button></div><div style="text-align:center;margin-top:10px;font-size:12px">🔢 PIN: <b id="cardPinDisplay" style="font-size:22px;letter-spacing:4px">----</b></div><div class="keypad"><button onclick="pressKey('1')">1</button><button onclick="pressKey('2')">2</button><button onclick="pressKey('3')">3</button><button onclick="pressKey('4')">4</button><button onclick="pressKey('5')">5</button><button onclick="pressKey('6')">6</button><button onclick="pressKey('7')">7</button><button onclick="pressKey('8')">8</button><button onclick="pressKey('9')">9</button><button class="del" onclick="pressKey('C')">⌫</button><button onclick="pressKey('0')">0</button><button class="ok" onclick="payCard()">✅ PAGAR</button></div><p style="font-size:11px;color:#aaa;margin-top:8px">💡 Demo PIN: <b style="color:#22c55e">2010</b> - Isi se pay hoga!</p></div><button class="btn black" style="width:100%" onclick="closeModal('cardModal')">❌ Cancelar</button></div></div>
+<!-- CASH MODAL -->
+<div class="modal" id="cashModal"><div class="box"><h2>CASH</h2><p>Total: <b id="cashTotal" style="font-size:22px">0.00</b></p><p style="margin-top:10px">Cliente ne kitne diye?</p><input id="cashGiven" type="number" class="search" placeholder="0.00" oninput="calcChange()" style="text-align:center;font-size:24px;font-weight:900"><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn small black" onclick="setCash(5)">5</button><button class="btn small black" onclick="setCash(10)">10</button><button class="btn small black" onclick="setCash(20)">20</button><button class="btn small black" onclick="setCash(50)">50</button><button class="btn small black" onclick="setCash(100)">100</button><button class="btn small green" onclick="setCashExact()">Exacto</button></div><div style="background:#f0fdf4;padding:12px;border-radius:12px;margin-top:10px"><b>CAMBIO:</b><br><b id="cashChange" style="font-size:30px;color:#16a34a">0.00</b><br><span id="cashMsg"></span></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn green" style="flex:1" onclick="confirmCash()">COBRAR</button><button class="btn black" onclick="closeModal('cashModal')">Cancelar</button></div></div></div>
 
-<!-- ADD PRODUCT -->
-<div class="modal" id="addModal"><div class="modal-box"><h2>➕ Apna Producto Add Karo</h2><p style="color:#666;font-size:13px">Khud ka code lagake apni chiz add karo!</p><label style="text-align:left;display:block;font-size:12px;font-weight:800;margin-top:10px">🏷️ Nombre</label><input id="newName" placeholder="Jaise: Mango"><label style="text-align:left;display:block;font-size:12px;font-weight:800">🔢 Código</label><input id="newCode" placeholder="Jaise: 9999"><label style="text-align:left;display:block;font-size:12px;font-weight:800">💰 Precio (€)</label><input id="newPrice" type="number" step="0.01" placeholder="2.50"><label style="text-align:left;display:block;font-size:12px;font-weight:800">📂 Categoría</label><select id="newCat"><option>Bebidas</option><option>Comida</option><option>Lácteos</option><option>Frutas</option><option>Limpieza</option><option>Snacks</option><option>Otros</option></select><label style="text-align:left;display:block;font-size:12px;font-weight:800">😀 Emoji</label><input id="newEmoji" placeholder="🍎" value="🛒"><div style="display:flex;gap:8px;margin-top:10px"><button class="btn green" style="flex:1" onclick="saveNewProduct()">✅ ADD KARO</button><button class="btn black" onclick="closeModal('addModal')">❌ Cancelar</button></div></div></div>
+<!-- CARD MODAL -->
+<div class="modal" id="cardModal"><div class="box"><h2>CARD - Tarjeta</h2><div class="machine"><div class="screen" id="cardScreen">Inserta tu tarjeta...<br><br>Total: <b id="cardTotal">0.00</b></div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn small green" onclick="insertCard()">Tarjeta Daldo</button><button class="btn small blue" onclick="insertCard()">Tap</button></div><p style="text-align:center;margin-top:10px">PIN: <b id="pinShow" style="font-size:22px;letter-spacing:4px">----</b></p><div class="keys"><button onclick="key('1')">1</button><button onclick="key('2')">2</button><button onclick="key('3')">3</button><button onclick="key('4')">4</button><button onclick="key('5')">5</button><button onclick="key('6')">6</button><button onclick="key('7')">7</button><button onclick="key('8')">8</button><button onclick="key('9')">9</button><button style="background:#ef4444;color:#fff" onclick="key('C')">Borrar</button><button onclick="key('0')">0</button><button style="background:#22c55e;color:#fff" onclick="payCard()">PAGAR</button></div><p style="font-size:11px;color:#aaa;margin-top:8px">Demo PIN: 2010</p></div><button class="btn black" style="width:100%" onclick="closeModal('cardModal')">Cancelar</button></div></div>
 
-<!-- SUCCESS -->
-<div class="modal" id="successModal"><div class="modal-box"><div id="successIcon" style="font-size:64px">✅</div><h2 id="successTitle">PAGO COMPLETADO!</h2><p id="successText" style="color:#666"></p><div id="printTicket" class="ticket" style="margin:14px 0"></div><div style="display:flex;gap:8px"><button class="btn green" style="flex:1" onclick="printBill()">🖨️ Print</button><button class="btn black" style="flex:1" onclick="closeSuccess()">🆕 Nueva Venta</button></div></div></div>
+<!-- ADD MODAL -->
+<div class="modal" id="addModal"><div class="box"><h2>+ Apna Producto</h2><input id="newName" class="search" placeholder="Naam - Mango"><input id="newCode" class="search" placeholder="Code - 9999"><input id="newPrice" type="number" class="search" placeholder="Precio - 2.50"><select id="newCat" class="search"><option>Bebidas</option><option>Comida</option><option>Lacteos</option><option>Frutas</option><option>Snacks</option><option>Limpieza</option></select><input id="newEmoji" class="search" placeholder="Emoji - Mango ke liye" value="P"><div style="display:flex;gap:8px"><button class="btn green" style="flex:1" onclick="saveNew()">ADD KARO</button><button class="btn black" onclick="closeModal('addModal')">Cancelar</button></div></div></div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal" id="okModal"><div class="box"><div style="font-size:60px">OK</div><h2 id="okTitle">PAGO COMPLETADO!</h2><p id="okText"></p><div id="ticketBox" style="background:#fff;border:2px dashed #111;padding:14px;border-radius:10px;text-align:left;font-family:monospace;font-size:13px;line-height:1.6;margin:12px 0"></div><div style="display:flex;gap:8px"><button class="btn green" style="flex:1" onclick="printBill()">Print</button><button class="btn black" style="flex:1" onclick="closeOk()">Nueva Venta</button></div></div></div>
 
 <script>
-var PRODUCTS=[
-{id:1,code:'8410',name:'Coca-Cola 330ml',price:1.20,cat:'Bebidas',emoji:'🥤',stock:48},
-{id:2,code:'8411',name:'Fanta Naranja 330ml',price:1.10,cat:'Bebidas',emoji:'🍊',stock:36},
-{id:3,code:'8412',name:'Agua Mineral 500ml',price:0.80,cat:'Bebidas',emoji:'💧',stock:60},
-{id:4,code:'8413',name:'Leche Entera 1L',price:1.45,cat:'Lácteos',emoji:'🥛',stock:24},
-{id:5,code:'8414',name:'Pan Barra',price:0.90,cat:'Comida',emoji:'🍞',stock:30},
-{id:6,code:'8415',name:'Huevos 12 uds',price:2.80,cat:'Comida',emoji:'🥚',stock:18},
-{id:7,code:'8416',name:'Arroz 1kg',price:1.85,cat:'Comida',emoji:'🍚',stock:22},
-{id:8,code:'8417',name:'Pasta Spaghetti 500g',price:1.30,cat:'Comida',emoji:'🍝',stock:28},
-{id:9,code:'8418',name:'Tomate Frito 400g',price:1.10,cat:'Comida',emoji:'🍅',stock:20},
-{id:10,code:'8419',name:'Pollo Entero 1kg',price:4.90,cat:'Comida',emoji:'🍗',stock:12},
-{id:11,code:'8420',name:'Manzana 1kg',price:2.20,cat:'Frutas',emoji:'🍎',stock:26},
-{id:12,code:'8421',name:'Plátano 1kg',price:1.60,cat:'Frutas',emoji:'🍌',stock:32},
-{id:13,code:'8422',name:'Naranja 1kg',price:1.90,cat:'Frutas',emoji:'🍊',stock:25},
-{id:14,code:'8423',name:'Yogur Natural x4',price:1.75,cat:'Lácteos',emoji:'🍦',stock:16},
-{id:15,code:'8424',name:'Queso Manchego 200g',price:3.50,cat:'Lácteos',emoji:'🧀',stock:14},
-{id:16,code:'8425',name:'Patatas Fritas 150g',price:1.50,cat:'Snacks',emoji:'🍟',stock:40},
-{id:17,code:'8426',name:'Chocolate Negro 100g',price:1.85,cat:'Snacks',emoji:'🍫',stock:30},
-{id:18,code:'8427',name:'Galletas María 400g',price:1.40,cat:'Snacks',emoji:'🍪',stock:28},
-{id:19,code:'8428',name:'Café Molido 250g',price:3.20,cat:'Bebidas',emoji:'☕',stock:15},
-{id:20,code:'8429',name:'Aceite Oliva 1L',price:5.90,cat:'Comida',emoji:'🫒',stock:10},
-{id:21,code:'8430',name:'Detergente 1L',price:3.80,cat:'Limpieza',emoji:'🧴',stock:18},
-{id:22,code:'8431',name:'Papel Higiénico x6',price:2.90,cat:'Limpieza',emoji:'🧻',stock:22},
-{id:23,code:'8432',name:'Jabón Manos 500ml',price:2.10,cat:'Limpieza',emoji:'🧼',stock:20},
-{id:24,code:'8433',name:'Helado Vainilla 500ml',price:3.40,cat:'Snacks',emoji:'🍦',stock:12},
-{id:25,code:'8434',name:'Cerveza 330ml',price:1.30,cat:'Bebidas',emoji:'🍺',stock:24},
-{id:26,code:'8435',name:'Zumo Naranja 1L',price:1.90,cat:'Bebidas',emoji:'🧃',stock:18},
-{id:27,code:'8436',name:'Atún Lata 3x80g',price:2.60,cat:'Comida',emoji:'🐟',stock:20},
-{id:28,code:'8437',name:'Jamón York 200g',price:2.40,cat:'Comida',emoji:'🥓',stock:15},
-{id:29,code:'8438',name:'Mantequilla 250g',price:2.10,cat:'Lácteos',emoji:'🧈',stock:14},
-{id:30,c
+var PRODUCTS = [
+{code:"8410",name:"Coca-Cola 330ml",price:1.20,cat:"Bebidas",em:"Cola"},
+{code:"8411",name:"Fanta Naranja",price:1.10,cat:"Bebidas",em:"Fanta"},
+{code:"8412",name:"Agua Mineral 500ml",price:0.80,cat:"Bebidas",em:"Agua"},
+{code:"8413",name:"Leche Entera 1L",price:1.45,cat:"Lacteos",em:"Leche"},
+{code:"8414",name:"Pan Barra",price:0.90,cat:"Comida",em:"Pan"},
+{code:"8415",name:"Huevos 12 uds",price:2.80,cat:"Comida",em:"Huevos"},
+{code:"8416",name:"Arroz 1kg",price:1.85,cat:"Comida",em:"Arroz"},
+{code:"8417",name:"Pasta Spaghetti",price:1.30,cat:"Comida",em:"Pasta"},
+{code:"8418",name:"Tomate Frito",price:1.10,cat:"Comida",em:"Tomate"},
+{code:"8419",name:"Pollo Entero 1kg",price:4.90,cat:"Comida",em:"Pollo"},
+{code:"8420",name:"Manzana 1kg",price:2.20,cat:"Frutas",em:"Manzana"},
+{code:"8421",name:"Platano 1kg",price:1.60,cat:"Frutas",em:"Platano"},
+{code:"8422",name:"Naranja 1kg",price:1.90,cat:"Frutas",em:"Naranja"},
+{code:"8423",name:"Yogur x4",price:1.75,cat:"Lacteos",em:"Yogur"},
+{code:"8424",name:"Queso 200g",price:3.50,cat:"Lacteos",em:"Queso"},
+{code:"8425",name:"Patatas Fritas",price:1.50,cat:"Snacks",em:"Patatas"},
+{code:"8426",name:"Chocolate 100g",price:1.85,cat:"Snacks",em:"Choco"},
+{code:"8427",name:"Galletas Maria",price:1.40,cat:"Snacks",em:"Galletas"},
+{code:"8428",name:"Cafe Molido 250g",price:3.20,cat:"Bebidas",em:"Cafe"},
+{code:"8429",name:"Aceite Oliva 1L",price:5.90,cat:"Comida",em:"Aceite"},
+{code:"8430",name:"Detergente 1L",price:3.80,cat:"Limpieza",em:"Detergente"},
+{code:"8431",name:"Papel Higienico x6",price:2.90,cat:"Limpieza",em:"Papel"},
+{code:"8432",name:"Jabon Manos",price:2.10,cat:"Limpieza",em:"Jabon"},
+{code:"8433",name:"Helado Vainilla",price:3.40,cat:"Snacks",em:"Helado"},
+{code:"8434",name:"Cerveza 330ml",price:1.30,cat:"Bebidas",em:"Cerveza"},
+{code:"8435",name:"Zumo Naranja 1L",price:1.90,cat:"Bebidas",em:"Zumo"},
+{code:"8436",name:"Atun Lata",price:2.60,cat:"Comida",em:"Atun"},
+{code:"8437",name:"Jamon York 200g",price:2.40,cat:"Comida",em:"Jamon"},
+{code:"8438",name:"Mantequilla 250g",price:2.10,cat:"Lacteos",em:"Mantequilla"},
+{code:"8439",name:"Fresa 500g",price:2.80,cat:"Frutas",em:"Fresa"}
+];
+var CATS = ["Todos","Bebidas","Comida","Lacteos","Frutas","Snacks","Limpieza"];
+var cart = [
+{code:"8410",name:"Coca-Cola 330ml",price:1.20,em:"Cola",qty:2},
+{code:"8414",name:"Pan Barra",price:0.90,em:"Pan",qty:1},
+{code:"8413",name:"Leche Entera 1L",price:1.45,em:"Leche",qty:1},
+{code:"8415",name:"Huevos 12 uds",price:2.80,em:"Huevos",qty:1},
+{code:"8421",name:"Platano 1kg",price:1.60,em:"Platano",qty:1},
+{code:"8426",name:"Chocolate 100g",price:1.85,em:"Choco",qty:1}
+];
+var curCat = "Todos";
+var isDomi = false;
+var disc = 0;
+var billNo = 1001;
+var pin = "";
+var cardIn = false;
+var todayCount = 2;
+var todayAmt = 24.50;
+
+function toast(m){var t=document.getElementById("toast");t.innerText=m;t.style.display="block";setTimeout(function(){t.style.display="none"},2500);}
+function fmt(n){return n.toFixed(2)+" Euro";}
+function renderCats(){
+  var h="";
+  for(var i=0;i<CATS.length;i++){ h += '<button class="'+(curCat===CATS[i]?'on':'')+'" onclick="filterCat(\''+CATS[i]+'\')">'+CATS[i]+'</button>'; }
+  document.getElementById("catRow").innerHTML=h;
+}
+function filterCat(c){ curCat=c; renderCats(); renderProds(); }
+function renderProds(){
+  var h=""; var n=0;
+  for(var i=0;i<PRODUCTS.length;i++){
+    var p=PRODUCTS[i];
+    if(curCat!=="Todos" && p.cat!==curCat) continue;
+    n++;
+    var num = n<10 ? "0"+n : ""+n;
+    h += '<div class="prod" onclick="addToCart(\''+p.code+'\')"><span class="num">'+num+'</span><span class="em">'+p.em+'</span><b>'+p.name+'</b><span class="code">Cod: '+p.code+' - '+p.cat+'</span><div class="price">'+p.price.toFixed(2)+' Euro</div></div>';
+  }
+  document.getElementById("prodGrid").innerHTML=h;
+}
+function doScan(){
+  var v=document.getElementById("scanInput").value.trim().toLowerCase();
+  if(!v){ toast("Pehle code ya naam likho!"); return; }
+  var f=null;
+  for(var i=0;i<PRODUCTS.length;i++){ if(PRODUCTS[i].code===v || PRODUCTS[i].name.toLowerCase().indexOf(v)>-1){ f=PRODUCTS[i]; break; } }
+  if(f){ addToCart(f.code); document.getElementById("scanInput").value=""; }
+  else{ toast("Nahi mila: "+v+" - Apna Producto dabao!"); }
+}
+function addToCart(code){
+  for(var i=0;i<PRODUCTS.length;i++){
+    if(PRODUCTS[i].code===code){
+      var p=PRODUCTS[i]; var ex=null;
+      for(var j=0;j<cart.length;j++){ if(cart[j].code===code) ex=cart[j]; }
+      if(ex){ ex.qty++; } else { cart.push({code:p.code,name:p.name,price:p.price,em:p.em,qty:1}); }
+      toast(p.name+" - Bill me add ho gaya!");
+      renderBill(); return;
+    }
+  }
+}
+function chQty(code,d){
+  for(var i=0;i<cart.length;i++){ if(cart[i].code===code){ cart[i].qty+=d; if(cart[i].qty<=0) cart.splice(i,1); break; } }
+  renderBill();
+}
+function delItem(code){ cart=cart.filter(function(x){return x.code!==code}); renderBill(); toast("Item hata diya!"); }
+function totals(){
+  var sub=0; for(var i=0;i<cart.length;i++) sub+=cart[i].price*cart[i].qty;
+  var d=sub*disc/100; var domi=isDomi?2.50:0; var tot=sub-d+domi;
+  return {sub:sub,disc:d,domi:domi,tot:tot};
+}
+function renderBill(){
+  var h="";
+  if(cart.length===0) h='<p style="text-align:center;color:#999;padding:20px">Bill khaali hai - Left se click karo!</p>';
+  for(var i=0;i<cart.length;i++){
+    var it=cart[i]; var num=i+1<10?"0"+(i+1):""+(i+1);
+    h+='<div class="bill-item"><div style="display:flex;gap:8px;align-items:center"><div class="n">'+num+'</div><div><b>'+it.name+'</b><br><span style="font-size:11px;color:#888">'+it.em+' - Cod '+it.code+' - '+it.price.toFixed(2)+' x '+it.qty+'</span></div></div><div style="display:flex;gap:8px;align-items:center"><div class="qty"><button onclick="chQty(\''+it.code+'\',-1)">-</button><b>'+it.qty+'</b><button onclick="chQty(\''+it.code+'\',1)">+</button></div><b>'+(it.price*it.qty).toFixed(2)+'</b><button onclick="delItem(\''+it.code+'\')" style="border:none;background:#fee2e2;color:#ef4444;width:26px;height:26px;border-radius:50%;cursor:pointer">X</button></div></div>';
+  }
+  document.getElementById("billList").innerHTML=h;
+  var t=totals();
+  document.getElementById("subT").innerText=t.sub.toFixed(2)+" Euro";
+  document.getElementById("grandT").innerText=t.tot.toFixed(2)+" Euro";
+  document.getElementById("discRow").style.display=disc>0?"flex":"none";
+  document.getElementById("discAmt").innerText="-"+t.disc.toFixed(2)+" Euro";
+  document.getElementById("domiRow").style.display=isDomi?"flex":"none";
+  document.getElementById("billNo").innerText=billNo;
+}
+function loadDemo(){
+  cart=[
+    {code:"8410",name:"Coca-Cola 330ml",price:1.20,em:"Cola",qty:2},
+    {code:"8414",name:"Pan Barra",price:0.90,em:"Pan",qty:1},
+    {code:"8413",name:"Leche Entera 1L",price:1.45,em:"Leche",qty:1},
+    {code:"8415",name:"Huevos 12 uds",price:2.80,em:"Huevos",qty:1},
+    {code:"8421",name:"Platano 1kg",price:1.60,em:"Platano",qty:1},
+    {code:"8426",name:"Chocolate 100g",price:1.85,em:"Choco",qty:1}
+  ];
+  disc=0; isDomi=false; document.getElementById("domiSw").classList.remove("on"); renderBill(); toast("Demo Bill load ho gaya - 6 items!");
+}
+function toggleDomi(){ isDomi=!isDomi; document.getElementById("domiSw").classList.toggle("on",isDomi); toast(isDomi?"Domicilio ON - +2.50 Euro":"Domicilio OFF"); renderBill(); }
+function setDisc(p){ if(cart.length===0){ toast("Pehle kuch add karo!"); return; } disc=p; toast(p===0?"Descuento hata diya!":p+"% Descuento lag gaya!"); renderBill(); }
+function quickCash(n){ openCash(); setTimeout(function(){ setCash(n); },100); }
+function setCash(n){ document.getElementById("cashGiven").value=n; calcChange(); }
+function setCashExact(){ var t=totals(); document.getElementById("cashGiven").value=t.tot.toFixed(2); calcChange(); }
+function openCash(){
+  if(cart.length===0){ toast("Bill khaali hai!"); return; }
+  var t=totals(); document.getElementById("cashTotal").innerText=t.tot.toFixed(2)+" Euro";
+  document.getElementById("cashGiven").value=""; document.getElementById("cashChange").innerText="0.00"; document.getElementById("cashMsg").innerText="";
+  document.getElementById("cashModal").classList.add("show");
+}
+function calcChange(){
+  var t=totals(); var g=parseFloat(document.getElementById("cashGiven").value)||0; var c=g-t.tot;
+  if(g===0){ document.getElementById("cashChange").innerText="0.00"; document.getElementById("cashMsg").innerText=""; return; }
+  if(c<0){ document.getElementById("cashChange").innerText=c.toFixed(2); document.getElementById("cashChange").style.color="#ef4444"; document.getElementById("cashMsg").innerText="Aur "+(-c).toFixed(2)+" Euro chahiye!"; }
+  else{ document.getElementById("cashChange").innerText=c.toFixed(2)+" Euro"; document.getElementById("cashChange").style.color="#16a34a"; document.getElementById("cashMsg").innerText=c===0?"Exacto! Koi cambio nahi!":"Customer ko "+c.toFixed(2)+" Euro wapas dena hai!"; }
+}
+function confirmCash(){
+  var t=totals(); var g=parseFloat(document.getElementById("cashGiven").value)||0;
+  if(g<t.tot){ toast("Paise kam hai!"); return; }
+  var ch=g-t.tot; closeModal("cashModal"); finish("CASH","Dio: "+g.toFixed(2)+" - Cambio: "+ch.toFixed(2));
+}
+function openCard(){
+  if(cart.length===0){ toast("Bill khaali hai!"); return; }
+  pin=""; cardIn=false; document.getElementById("pinShow").innerText="----";
+  var t=totals(); document.getElementById("cardTotal").innerText=t.tot.toFixed(2)+" Euro";
+  document.getElementById("cardScreen").innerHTML="Inserta tu tarjeta...<br><br>Total: <b>"+t.tot.toFixed(2)+" Euro</b>";
+  document.getElementById("cardModal").classList.add("show");
+}
+function insertCard(){ cardIn=true; document.getElementById("cardScreen").innerHTML="Tarjeta insertada...<br><br><b>Ab PIN dalo: 2010</b>"; toast("Tarjeta insert! Ab PIN dalo: 2010"); }
+function key(k){
+  if(k==="C"){ pin=pin.slice(0,-1); } else { if(pin.length>=4) return; pin+=k; }
+  var s=""; for(var i=0;i<pin.length;i++) s+="*"; for(var j=pin.length;j<4;j++) s+="-";
+  document.getElementById("pinShow").innerText=s;
+}
+function payCard(){
+  if(!cardIn){ toast("Pehle Tarjeta Daldo dabao!"); return; }
+  if(pin.length!==4){ toast("4 digit ka PIN dalo!"); return; }
+  document.getElementById("cardScreen").innerHTML="Procesando pago...";
+  setTimeout(function(){
+    if(pin==="2010"){
+      document.getElementById("cardScreen").innerHTML="<b style='color:#22c55e'>PAGO APROBADO!</b><br>Aut: 8842010";
+      setTimeout(function(){ closeModal("cardModal"); finish("CARD","PIN: **** - Aut: 8842010 - APROBADO"); },800);
+    } else {
+      document.getElementById("cardScreen").innerHTML="<b style='color:#ef4444'>PIN INCORRECTO!</b><br>Hint: PIN hai 2010";
+      pin=""; document.getElementById("pinShow").innerText="----"; toast("Galat PIN! Sahi hai: 2010");
+    }
+  },900);
+}
+function finish(method,extra){
+  var t=totals(); var cust=document.getElementById("custName").value||"Cliente";
+  var addr=isDomi?document.getElementById("domiAddr").value||"Sin direccion":"";
+  todayCount++; todayAmt+=t.tot; document.getElementById("todayInfo").innerText=todayCount+" ventas - "+todayAmt.toFixed(2)+" Euro";
+  var items=""; for(var i=0;i<cart.length;i++){ var num=i+1<10?"0"+(i+1):""+(i+1); items+=num+". "+cart[i].name+" x"+cart[i].qty+" - "+(cart[i].price*cart[i].qty).toFixed(2)+"<br>"; }
+  var ticket='<b>RAISTAR MARKET</b><br>Ticket #'+billNo+'<br>Cliente: '+cust+'<br>----------------<br>'+items+'----------------<br>Subtotal: '+t.sub.toFixed(2)+'<br>'+(disc>0?'Descuento: -'+t.disc.toFixed(2)+'<br>':'')+(isDomi?'Domicilio: +2.50<br>Addr: '+addr+'<br>':'')+'<b>TOTAL: '+t.tot.toFixed(2)+' Euro</b><br>Pago: '+method+'<br>'+extra;
+  document.getElementById("ticketBox").innerHTML=ticket;
+  document.getElementById("okTitle").innerText=method==="CARD"?"PAGO CON TARJETA APROBADO!":"PAGO EN EFECTIVO COMPLETADO!";
+  document.getElementById("okText").innerText="Ticket #"+billNo+" - "+cust+" - Total: "+t.tot.toFixed(2)+" Euro - "+extra;
+  document.getElementById("okModal").classList.add("show");
+  billNo++;
+}
+function closeOk(){ document.getElementById("okModal").classList.remove("show"); newSale(); }
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+function openAdd(){ document.getElementById("addModal").classList.add("show"); }
+function saveNew(){
+  var n=document.getElementById("newName").value.trim();
+  var c=document.getElementById("newCode").value.trim();
+  var p=parseFloat(document.getElementById("newPrice").value);
+  var cat=document.getElementById("newCat").value;
+  var em=document.getElementById("newEmoji").value||"P";
+  if(!n||!c||!p){ toast("Naam, Code aur Precio - teeno dalo!"); return; }
+  for(var i=0;i<PRODUCTS.length;i++){ if(PRODUCTS[i].code===c){ toast("Ye code pehle se hai!"); return; } }
+  PRODUCTS.push({code:c,name:n,price:p,cat:cat,em:em});
+  closeModal("addModal"); document.getElementById("newName").value=""; document.getElementById("newCode").value=""; document.getElementById("newPrice").value="";
+  toast(n+" add ho gaya! Ab click karke add karo!");
+  curCat="Todos"; renderCats(); renderProds();
+  setTimeout(function(){ addToCart(c); },200);
+}
+function newSale(){ cart=[]; disc=0; isDomi=false; document.getElementById("domiSw").classList.remove("on"); document.getElementById("custName").value=""; document.getElementById("domiAddr").value=""; renderBill(); }
+function clearBill(){ if(cart.length===0){ toast("Bill pehle se khaali hai!"); return; } if(!confirm("Bill saaf kar du?")) return; newSale(); toast("Bill saaf ho gaya!"); }
+function printBill(){
+  if(document.getElementById("ticketBox").innerHTML===""){ if(cart.length===0){ toast("Pehle kuch add karo!"); return; } toast("Pehle PAY karo, phir print hoga!"); return; }
+  window.print();
+}
+renderCats(); renderProds(); renderBill();
+</script>
+</body>
+</html>
